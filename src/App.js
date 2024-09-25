@@ -1,23 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import AuthComponent from './components/auth';
+import FooterComponent from './components/footer';
+import MessengerComponent from './components/messenger';
+import { socket } from './services/socket'
 
 function App() {
+  socket.connect();
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>Header</p>
       </header>
+      <AuthComponent isRegistration={false} />
+      
+      <MessengerComponent></MessengerComponent>
+      
+      <FooterComponent></FooterComponent>
     </div>
   );
 }
