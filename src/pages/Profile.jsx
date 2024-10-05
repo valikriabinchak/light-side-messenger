@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 
 import { lightTheme, darkTheme } from '../components/themes';
 import { Container, Button, LabelField, InputField } from '../components/styled-components';
+
 function ProfileComponent({ isDarkTheme }) {    
     const [isDark, setIsDark] = useState(isDarkTheme);
 
     const toggleForm = () => setIsDark(!isDark);
+
+    const navigate = useNavigate();
 
     return (
         <Container className="grid-container" theme={isDark ? lightTheme : darkTheme}>
@@ -46,10 +49,10 @@ function ProfileComponent({ isDarkTheme }) {
             </Container>
 
             <Container className="item action-btns" theme={isDark ? lightTheme : darkTheme}>
-                <Button theme={isDark ? lightTheme : darkTheme}>Reset passoword</Button>
+                <Button onClick={() => navigate('/messenger')} theme={isDark ? lightTheme : darkTheme}>Reset passoword</Button>
                 <Button theme={isDark ? lightTheme : darkTheme}>Edit</Button>
-                <Button theme={isDark ? lightTheme : darkTheme}>Save</Button>
-                <Button className="cancel-btn" theme={isDark ? lightTheme : darkTheme}>Cancel</Button>
+                <Button onClick={() => navigate('/messenger')} theme={isDark ? lightTheme : darkTheme}>Save</Button>
+                <Button onClick={() => navigate(-1)} className="cancel-btn" theme={isDark ? lightTheme : darkTheme}>Cancel</Button>
             </Container>
       </Container>
     );

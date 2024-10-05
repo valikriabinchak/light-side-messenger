@@ -17,7 +17,7 @@ function App() {
   return (
       <Body className="app-container" theme={isDark ? lightTheme : darkTheme}>
         <Routes>
-            <Route path="/" element={<AuthComponent isRegistration={false}/>} />
+            <Route path="/" element={<AuthComponent isRegistration={false} isDarkTheme={isDark}/>} />
             <Route path="/messenger" element={<MessengerComponent />} />
             <Route path="/profile" element={<ProfileComponent isDarkTheme={isDark}/>} />
         </Routes>
