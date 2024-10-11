@@ -1,6 +1,6 @@
 import './Profile.css';
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { lightTheme, darkTheme } from '../components/themes';
@@ -14,38 +14,38 @@ function ProfileComponent({ isDarkTheme }) {
     const navigate = useNavigate();
 
     return (
-        <Container className="grid-container" theme={isDark ? lightTheme : darkTheme}>
-            <Container className="item photo" theme={isDark ? lightTheme : darkTheme}>
-                <img src="" alt="" />
-                <Button theme={isDark ? lightTheme : darkTheme}>Change photo</Button>
+        <Container className="grid-container" theme={theme == darkTheme ? darkTheme : lightTheme }>
+            <Container className="item photo" theme={theme == darkTheme ? darkTheme : lightTheme }>
+                <img src="../../assets/icons/user.png" alt="User profile photo" />
+                <Button theme={theme == darkTheme ? darkTheme : lightTheme }>Change photo</Button>
             </Container>
-            <Container className="item main-data" theme={isDark ? lightTheme : darkTheme}>
-                <LabelField theme={isDark ? lightTheme : darkTheme}>First name</LabelField>
-                <InputField type="text" theme={isDark ? lightTheme : darkTheme}/>
+            <Container className="item main-data" theme={theme == darkTheme ? darkTheme : lightTheme }>
+                <LabelField theme={theme == darkTheme ? darkTheme : lightTheme }>First name</LabelField>
+                <InputField type="text" theme={theme == darkTheme ? darkTheme : lightTheme } onChange={(e) => setFirstName(e.target.value)}/>
 
-                <LabelField theme={isDark ? lightTheme : darkTheme}>Last name</LabelField>
-                <InputField type="text" theme={isDark ? lightTheme : darkTheme}/>
+                <LabelField theme={theme == darkTheme ? darkTheme : lightTheme }>Last name</LabelField>
+                <InputField type="text" theme={theme == darkTheme ? darkTheme : lightTheme } onChange={(e) => setLastName(e.target.value)}/>
 
-                <LabelField theme={isDark ? lightTheme : darkTheme}>Email address</LabelField>
-                <InputField type="text" theme={isDark ? lightTheme : darkTheme}/>
+                <LabelField theme={theme == darkTheme ? darkTheme : lightTheme }>Email address</LabelField>
+                <InputField type="text" theme={theme == darkTheme ? darkTheme : lightTheme } onChange={(e) => setEmailAddress(e.target.value)}/>
 
-                <Container className="ages-theme-content" theme={isDark ? lightTheme : darkTheme}>
-                    <Container className="age-field" theme={isDark ? lightTheme : darkTheme}>
-                        <LabelField theme={isDark ? lightTheme : darkTheme}>Ages</LabelField>
-                        <InputField type="number" theme={isDark ? lightTheme : darkTheme}/>
+                <Container className="ages-theme-content" theme={theme == darkTheme ? darkTheme : lightTheme }>
+                    <Container className="age-field" theme={theme == darkTheme ? darkTheme : lightTheme }>
+                        <LabelField theme={theme == darkTheme ? darkTheme : lightTheme }>Ages</LabelField>
+                        <InputField type="number" theme={theme == darkTheme ? darkTheme : lightTheme } onChange={(e) => setAges(e.target.value)}/>
                     </Container>
 
-                    <Container className="theme-switch" theme={isDark ? lightTheme : darkTheme}>
-                        <LabelField theme={isDark ? lightTheme : darkTheme}>Theme</LabelField>
-                        <LabelField className="switch" theme={isDark ? lightTheme : darkTheme}>
-                            <InputField type="checkbox" onChange={toggleForm} theme={isDarkTheme ? lightTheme : darkTheme}/>
+                    <Container className="theme-switch" theme={theme == darkTheme ? darkTheme : lightTheme }>
+                        <LabelField theme={theme == darkTheme ? darkTheme : lightTheme }>Theme</LabelField>
+                        <LabelField className="switch" theme={theme == darkTheme ? darkTheme : lightTheme }>
+                            <InputField type="checkbox" onClick={props.toggleTheme} theme={theme == darkTheme ? darkTheme : lightTheme }/>
                             <span className="slider round"></span>
                         </LabelField>
                     </Container>
                 </Container>
 
-                <LabelField theme={isDark ? lightTheme : darkTheme}>Native language (translation code)</LabelField>
-                <InputField type="text" theme={isDark ? lightTheme : darkTheme}/>
+                <LabelField theme={theme == darkTheme ? darkTheme : lightTheme }>Native language (translation code)</LabelField>
+                <InputField type="text" theme={theme == darkTheme ? darkTheme : lightTheme } onChange={(e) => setNativeLanguage(e.target.value)}/>
             </Container>
 
             <Container className="item action-btns" theme={isDark ? lightTheme : darkTheme}>
@@ -57,11 +57,6 @@ function ProfileComponent({ isDarkTheme }) {
       </Container>
     );
   }
-  
-
-ProfileComponent.propTypes = {
-    isDarkTheme: PropTypes.bool.isRequired,
-}
 
 export default ProfileComponent;
   

@@ -15,7 +15,11 @@
 }
 
 .photo {
-    grid-column: 1; 
+    grid-column: 1;
+}
+
+.photo button {
+    width: 100%;
 }
 
 .photo img {
@@ -69,10 +73,7 @@
 .action-btns button, .photo button {
     background-color: #004F4F;
     color: #00DDDD;
-    height: 40px;
-    min-width: 90px;
-    max-width: 110px;
-    margin: 10px;
+    margin: 7.5px;
 }
  
 .action-btns .cancel-btn {

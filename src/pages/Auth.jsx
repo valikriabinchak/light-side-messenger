@@ -17,6 +17,7 @@ function AuthComponent({ isRegistration, isDarkTheme }) {
     e.preventDefault();
   };
 
+  console.log("IS DARK: ", theme)
   return (
     <div className={isReg ? "RegisterComponent" : "LoginComponent"}>
       <form onSubmit={handleSubmit}>
