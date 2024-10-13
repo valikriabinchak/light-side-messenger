@@ -5,13 +5,40 @@ import PropTypes from 'prop-types';
 
 import { lightTheme, darkTheme } from '../components/themes';
 import { Container, Button, LabelField, InputField } from '../components/styled-components';
+import { useTheme } from 'styled-components';
 
-function ProfileComponent({ isDarkTheme }) {    
-    const [isDark, setIsDark] = useState(isDarkTheme);
+function ProfileComponent(props) {    
+    const [firstName, setFirstName] = useState('');
+    const [emailAddress, setEmailAddress] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [ages, setAges] = useState(18);
+    const [nativeLanguage, setNativeLanguage] = useState(18);
 
-    const toggleForm = () => setIsDark(!isDark);
+    let theme = useTheme();
+    const toggleForm = () => theme == darkTheme ? theme = lightTheme : theme = darkTheme;
 
     const navigate = useNavigate();
+
+    function handleProfileUpdate() {
+        const token = localStorage.getItem('token');
+
+        fetch('http://localhost:3002/user/profile', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                emailAddress,
+                ages,
+                nativeLanguage,
+            }),
+          }).then(response => response.json())
+            .then(data => console.log('Profile updated:', data))
+            .catch(error => console.error('Error:', error));
+    }
 
     return (
         <Container className="grid-container" theme={theme == darkTheme ? darkTheme : lightTheme }>
@@ -38,7 +65,7 @@ function ProfileComponent({ isDarkTheme }) {
                     <Container className="theme-switch" theme={theme == darkTheme ? darkTheme : lightTheme }>
                         <LabelField theme={theme == darkTheme ? darkTheme : lightTheme }>Theme</LabelField>
                         <LabelField className="switch" theme={theme == darkTheme ? darkTheme : lightTheme }>
-                            <InputField type="checkbox" onClick={props.toggleTheme} theme={theme == darkTheme ? darkTheme : lightTheme }/>
+                            <InputField type="checkbox" onClick={props.toggleTheme} theme={theme == darkTheme ? darkTheme : lightTheme } onChange={() => toggleForm()}/>
                             <span className="slider round"></span>
                         </LabelField>
                     </Container>
@@ -48,11 +75,11 @@ function ProfileComponent({ isDarkTheme }) {
                 <InputField type="text" theme={theme == darkTheme ? darkTheme : lightTheme } onChange={(e) => setNativeLanguage(e.target.value)}/>
             </Container>
 
-            <Container className="item action-btns" theme={isDark ? lightTheme : darkTheme}>
-                <Button onClick={() => navigate('/messenger')} theme={isDark ? lightTheme : darkTheme}>Reset passoword</Button>
-                <Button theme={isDark ? lightTheme : darkTheme}>Edit</Button>
-                <Button onClick={() => navigate('/messenger')} theme={isDark ? lightTheme : darkTheme}>Save</Button>
-                <Button onClick={() => navigate(-1)} className="cancel-btn" theme={isDark ? lightTheme : darkTheme}>Cancel</Button>
+            <Container className="item action-btns" theme={theme == darkTheme ? darkTheme : lightTheme ? lightTheme : darkTheme}>
+                <Button onClick={() => navigate('/email-send')} theme={theme == darkTheme ? darkTheme : lightTheme ? lightTheme : darkTheme}>Reset passoword</Button>
+                <Button theme={theme == darkTheme ? darkTheme : lightTheme ? lightTheme : darkTheme}>Edit</Button>
+                <Button onClick={() => navigate('/messenger')} theme={theme == darkTheme ? darkTheme : lightTheme ? lightTheme : darkTheme}>Save</Button>
+                <Button onClick={() => navigate(-1)} className="cancel-btn" theme={theme == darkTheme ? darkTheme : lightTheme ? lightTheme : darkTheme}>Cancel</Button>
             </Container>
       </Container>
     );

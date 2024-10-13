@@ -11,7 +11,7 @@ import { Body } from './components/styled-components.js';
 import ResetPasswordComponent from './pages/ResetPassword.jsx';
 import OneMoreStepComponent from './pages/OneMoreStep.jsx';
 import { ThemeProvider } from 'styled-components';
-import { ThemeContext } from 'styled-components'
+import { ThemeContext } from 'styled-components';
 
 // export const ThemeContext = React.createContext({
 //   theme: true,
@@ -20,29 +20,24 @@ import { ThemeContext } from 'styled-components'
 // });
 
 function App() {
-  const [isDark, setTheme] = useState(true);
-
-  function toggleTheme(){
-    setTheme(prevtheme => !prevtheme);
-  };
+  const [isDark, setIsDark] = useState(true);
 
   // socket.connect();
 
   return (
-      <Body className="app-container" theme={isDark ? lightTheme : darkTheme}>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <Body className="app-container" theme={isDark ? darkTheme : lightTheme}>
         <Routes>
-            <Route path="/" element={<AuthComponent isRegistration={false} isDarkTheme={isDark}/>} />
-            <Route path="/messenger" element={<MessengerComponent />} />
-            <Route path="/profile" element={<ProfileComponent isDarkTheme={isDark}/>} />
+            <Route path="/" element={<AuthComponent isRegistration={false} />} />
+            <Route path="/messenger" element={<MessengerContainerComponent />} />
+            <Route path="/profile" element={<ProfileComponent />} />
+            <Route path="/resetting-password" element={<ResetPasswordComponent isEmailPage={false}/>} />
+            <Route path="/email-send" element={<ResetPasswordComponent isEmailPage={true}/>} />
+            <Route path="/one-more-step" element={<OneMoreStepComponent />} />
         </Routes>
       </Body>
     </ThemeProvider>
   );
 }
-
-
-{/* <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      
-</ThemeContext.Provider> */}
 
 export default App;

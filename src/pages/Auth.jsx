@@ -4,36 +4,93 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { lightTheme, darkTheme } from '../components/themes';
 import { Container, Button, LabelField, InputField } from '../components/styled-components';
+import { useTheme } from 'styled-components';
 
-function AuthComponent({ isRegistration, isDarkTheme }) {
+function AuthComponent({ isRegistration }) {
   const [isReg, setIsReg] = useState(isRegistration);
-  const [isDark, setIsDark] = useState(isDarkTheme);
+  const [firstName, setFirstName] = useState('');
+  const [email, setemail] = useState('');
+  const [password, setPassword] = useState('');
+
+  let theme = useTheme();
 
   const toggleForm = () => setIsReg(!isReg);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleRegister = async () => {
+    try {
+      const response = await fetch('http://localhost:3002/user/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName,
+          email,
+          password
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        toggleForm();
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (err) {
+      console.error('Registration failed:', err);
+      alert('Registration failed. Try again later.');
+    }
   };
+  
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:3002/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', email);
+        navigate('messenger');
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (err) {
+      console.error('Login failed:', err);
+      alert('Login failed. Try again later.');
+    }
+  };  
 
-  console.log("IS DARK: ", theme)
   return (
     <div className={isReg ? "RegisterComponent" : "LoginComponent"}>
-      <form onSubmit={handleSubmit}>
+      <form>
         {isReg && (
           <>
-            <LabelField theme={isDark ? lightTheme : darkTheme}>Username</LabelField><br/>
-            <InputField type="text" name="username" required theme={isDark ? lightTheme : darkTheme}/><br/>
+            <LabelField theme={theme == darkTheme ? darkTheme : lightTheme}>Username</LabelField><br/>
+            <InputField onChange={(e) => setFirstName(e.target.value)} type="text" name="username" required theme={theme == darkTheme ? darkTheme : lightTheme}/><br/>
           </>
         )}
-        <LabelField theme={isDark ? lightTheme : darkTheme}>Login</LabelField><br/>
-        <InputField type="text" name="login" theme={isDark ? lightTheme : darkTheme}/><br/>
-        <LabelField theme={isDark ? lightTheme : darkTheme}>Password</LabelField><br/>
-        <InputField type="password" name="password" theme={isDark ? lightTheme : darkTheme}/><br/>
-        <Button type="submit" className="btn" onClick={() => navigate('profile')} theme={isDark ? lightTheme : darkTheme}>Submit</Button><br/>
+        <LabelField theme={theme == darkTheme ? darkTheme : lightTheme}>Login</LabelField><br/>
+        <InputField onChange={(e) => setemail(e.target.value)} type="text" name="login" theme={theme == darkTheme ? darkTheme : lightTheme}/><br/>
+        <div className='password-fields'>
+          <LabelField theme={theme === darkTheme ? darkTheme : lightTheme}>Password</LabelField>
+          <a href='email-send'>Forgot password?</a>
+        </div>        
+        <InputField onChange={(e) => setPassword(e.target.value)} type="password" name="password" theme={theme == darkTheme ? darkTheme : lightTheme}/><br/>
         {isReg 
-          ? <Button Button type="submit" className="btn" onClick={toggleForm} theme={isDark ? lightTheme : darkTheme}>Back to Sign in</Button>
+          ? <Button type="button" className="btn" onClick={handleRegister} theme={theme == darkTheme ? darkTheme : lightTheme}>Submit</Button>
+          : <Button type="button" className="btn" onClick={handleLogin} theme={theme == darkTheme ? darkTheme : lightTheme}>Submit</Button>
+        }
+        {isReg 
+          ? <Button Button type="submit" className="btn" onClick={toggleForm} theme={theme == darkTheme ? darkTheme : lightTheme}>Back to Sign in</Button>
           : <></> 
         }
       </form>
@@ -42,7 +99,7 @@ function AuthComponent({ isRegistration, isDarkTheme }) {
       ? <></> 
       : <div className="create-account">
           <a href="#">Sign in with QR code</a>
-          <LabelField theme={isDark ? lightTheme : darkTheme}>New to LightSideMessenger? <a href="#" onClick={toggleForm}>Create an account</a></LabelField>
+          <LabelField theme={theme == darkTheme ? darkTheme : lightTheme}>New to LightSideMessenger? <a href="#" onClick={toggleForm}>Create an account</a></LabelField>
         </div>
       }
     </div>

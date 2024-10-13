@@ -1,82 +1,126 @@
 // Chat.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Chat.css';
 import { useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
 
 import { lightTheme, darkTheme } from '../../components/themes';
 import { Container, Button, LabelField, InputField } from '../../components/styled-components';
 import PersonInfo from './PersonInfo';
-
-const contact = {
-    id: 1,
-    name: 'John Doe',
-    lastMessage: 'Hey, how are you?',
-    lastSeen: '5 min ago',
-    photo: '../../../assets/icons/user.png',
-}
-
-const messages = [
-    {
-      id: 1,
-      sender: 'John Doe',
-      content: 'Hey, how are you?',
-      timestamp: '2024-10-07 10:15:00',
-      isMine: false
-    },
-    {
-      id: 2,
-      sender: 'Me',
-      content: 'I’m good, thanks! How about you?',
-      timestamp: '2024-10-07 10:16:00',
-      isMine: true
-    },
-    {
-      id: 3,
-      sender: 'John Doe',
-      content: 'Doing well! What’s up?',
-      timestamp: '2024-10-07 10:17:30',
-      isMine: false
-    },
-    {
-      id: 4,
-      sender: 'Me',
-      content: 'Just working on a project right now.',
-      timestamp: '2024-10-07 10:18:00',
-      isMine: true
-    },
-    {
-      id: 5,
-      sender: 'John Doe',
-      content: 'Cool! Need any help?',
-      timestamp: '2024-10-07 10:19:00',
-      isMine: false
-    },
-    {
-      id: 6,
-      sender: 'Me',
-      content: 'Not at the moment, but I’ll let you know. Thanks!',
-      timestamp: '2024-10-07 10:20:00',
-      isMine: true
-    }
-  ];
+import { useTheme } from 'styled-components';
   
-function Chat({isDarkTheme}) {
-    const [input, setInput] = useState('');
-    const [isDark, setIsDark] = useState(isDarkTheme);
+const socket = io('http://localhost:3002');
+
+function Chat({person}) {
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
+    const [currentUser, setCurrentUser] = useState(person);
+    const currentUserEmail = localStorage.getItem('email');
+
+    let theme = useTheme();
+    useEffect(() => {
+      if (person?.email) {
+        getMessages(person.email);
+      }
+    }, [person]);
+  
+    // Set up the socket listener when the chat component mounts
+    useEffect(() => {
+      const messageListener = (message) => {
+        console.log('New message received:', message);
+        setMessages((prev) => [...prev, message]);
+      };
+  
+      if (currentUserEmail) {
+        // Subscribe to the unique channel for the current user
+        socket.on(`newMessage:${currentUserEmail}`, messageListener);
+      }
+  
+      return () => {
+        if (currentUserEmail) {
+          socket.off(`newMessage:${currentUserEmail}`, messageListener); // Clean up
+        }
+      };
+    }, [currentUserEmail]);
+
+  //   useEffect(() => {
+  //     console.log("CHAT PERSON HAS BEEN CHANGED", person);
+  //     setCurrentUser(person);
+  //     if (person?.email) {
+  //       getMessages(person.email); // Fetch messages for the selected person
+  //   }
+  //   const currentUserEmail = localStorage.getItem('email');
+  //     socket.on('newMessage', (message) => {
+  //       setMessages((prev) => [...prev, message]);
+  //   });
+
+  //   return () => {
+  //       socket.off('newMessage'); // Clean up listener
+  //   };
+  // }, [person]);
+
+  const getMessages = async (friendEmail) => {
+    try {
+        const token = localStorage.getItem('token');
+
+        const response = await fetch(
+            `http://localhost:3002/user/messages?friendEmail=${friendEmail}`, 
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Fetched messages:', data);
+            // Update the state with the fetched messages
+            setMessages(data); 
+        } else {
+            const error = await response.json();
+            alert(`Error: ${error.message}`);
+        }
+    } catch (err) {
+        console.error('Error fetching messages:', err);
+        alert('Failed to fetch messages. Please try again later.');
+    }
+};
+
+const sendMessage = () => {
+  if (newMessage.trim() && person?.email) {
+    const messageData = {
+      sender: currentUserEmail,
+      receiver: person.email,
+      content: newMessage,
+      timestamp: new Date(),
+    };
+
+    // Emit the message to the backend
+    socket.emit('sendMessage', messageData);
+
+    // Optimistically update the UI
+    setMessages((prev) => [...prev, messageData]);
+    setNewMessage('');
+  }
+};
+
 
     const navigate = useNavigate();
     return (
         <div className="chat-container">
             <div className="chat-header">
-              <PersonInfo isDarkTheme={isDarkTheme} person={contact}></PersonInfo> 
+              <PersonInfo person={currentUser}></PersonInfo> 
               <button className="exit-btn" onClick={() => navigate('/')}></button>               
             </div>
 
-            <Container className='message-area' theme={isDark ? lightTheme : darkTheme}>
+            <Container className='message-area' theme={theme == darkTheme ? darkTheme : lightTheme ? lightTheme : darkTheme}>
                 {messages.map((message, index) => (
                     <div
                     key={index}
-                    className={`message-item ${message.sender === 'Me' ? 'left' : 'right'}`}
+                    className={`message-item ${message.sender === currentUserEmail ? 'left' : 'right'}`}
                     >
                     <div className="message-content">
                         <p>{message.content}</p>
@@ -92,8 +136,8 @@ function Chat({isDarkTheme}) {
             </Container>
             <Container className="input-area">
                 <Button className="emoji-button">😊</Button>
-                <InputField                 type="text"             />
-                <Button theme={isDark ? lightTheme : darkTheme}>Send</Button>
+                <InputField onChange={(e) => setNewMessage(e.target.value)} value={newMessage} type="text" theme={theme == darkTheme ? darkTheme : lightTheme}/>
+                <Button theme={theme == darkTheme ? darkTheme : lightTheme} onClick={sendMessage}>Send</Button>
             </Container>
         </div>
     );
