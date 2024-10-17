@@ -1,5 +1,5 @@
 // Chat.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Chat.css';
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 import { lightTheme, darkTheme } from '../../components/themes';
 import { Container, Button, LabelField, InputField } from '../../components/styled-components';
 import PersonInfo from './PersonInfo';
-import { ThemeContext } from '.././ThemeContext.js'; 
+import { ThemeContext } from '../../ThemeContext.js'; 
 
 const socket = io('http://localhost:3002');
 

@@ -6,8 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './ThemeContext';
 
-import { mount } from 'cypress/react';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -20,7 +18,3 @@ root.render(
 );
 
 reportWebVitals();
-
-Cypress.Commands.add('mount', (component) => {
-  return mount(<BrowserRouter>{component}</BrowserRouter>);
-});
