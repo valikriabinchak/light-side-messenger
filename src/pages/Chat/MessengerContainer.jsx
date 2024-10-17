@@ -6,16 +6,20 @@ import Chat from './Chat';
 
 // const socket = io('http://localhost:3002'); 
 // socket.connect("subscribe");
+const defaultUser = {
+  firstName: 'Select a user',
+  lastName: '',
+  email: '',
+};
 
 function MessengerContainerComponent() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [currentUser, setCurrentUser] = useState(defaultUser);
 
   useEffect(() => {
-    // socket.on('message', (msg) => {
-    //   setMessages((prevMessages) => [...prevMessages, msg]);
-    // });
-  }, []);
+    console.log("CURRENT USER UPDATED:", currentUser);
+  }, [currentUser]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,10 +30,17 @@ function MessengerContainerComponent() {
     }
   };
 
+
+    const handleUserChange = (friend) => {
+        // Update the current user state
+        setCurrentUser(friend);
+        // You might want to do additional actions here, like fetching chat history or profile details
+    };
+
   return (
     <div>
-      <PeopleTab></PeopleTab>
-      <Chat></Chat>
+      <PeopleTab onUserChange={handleUserChange}></PeopleTab>
+      <Chat person={currentUser}></Chat>
     </div>
   );
 }

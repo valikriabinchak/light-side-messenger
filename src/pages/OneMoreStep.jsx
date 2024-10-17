@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 
 import { lightTheme, darkTheme } from '../components/themes';
-import { Container, Button, LabelField, InputField } from '../components/styled-components';
-import { ThemeContext } from 'styled-components';
-import { useTheme } from 'styled-components';
+import { Container, Button, LabelField } from '../components/styled-components';
+import { ThemeContext } from '.././ThemeContext.js'; 
 
 function OneMoreStepComponent() {
-  let theme = useTheme();
+  const { theme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
 

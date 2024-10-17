@@ -35,3 +35,13 @@
 .last-seen {
     font-size: 0.8em;
 }
+
+.friend-request-btns {
+    display: flex;
+}
+
+#accept-friend-btn, #reject-friend-btn {
+    min-width: 0px;
+    width: 40px; /* Fixed width */
+    margin: 2px;
+}

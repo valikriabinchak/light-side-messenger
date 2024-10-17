@@ -1,17 +1,17 @@
-import './ResetPassword.css';
+
 import { useNavigate } from 'react-router-dom';
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import './ResetPassword.css';
 import { lightTheme, darkTheme } from '../components/themes';
 import { Container, Button, LabelField, InputField } from '../components/styled-components';
-import { ThemeContext } from 'styled-components';
-import { useTheme } from 'styled-components';
+import { ThemeContext } from '.././ThemeContext.js'; 
 
 function ResetPasswordComponent({ isEmailPage }) {
   const { id } = useParams();
   
-  let theme = useTheme();
+  const { theme } = useContext(ThemeContext);
   const [email, setEmailValue] = useState('');
 
   const [newPassword, setNewPassword] = useState('');

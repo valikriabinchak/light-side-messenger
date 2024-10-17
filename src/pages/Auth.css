@@ -13,6 +13,10 @@ form {
     border-radius: 10px;
 }
 
+form .btn {
+    margin-top: 15px;
+}
+
 .create-account {
     margin-top: 10px;
     font-size: 12px;
@@ -31,4 +35,15 @@ form {
     width: 100%;
     position: relative;
     margin: 5px 0px;
+}
+
+.password-fields {
+    display: 'flex';
+    justify-content: 'space-between';
+    align-items: 'center';
+}
+
+.password-fields a {
+    text-align: right;
+    text-decoration: none;
 }
