@@ -7,8 +7,8 @@ import io from 'socket.io-client';
 import { lightTheme, darkTheme } from '../../components/themes';
 import { Container, Button, LabelField, InputField } from '../../components/styled-components';
 import PersonInfo from './PersonInfo';
-import { useTheme } from 'styled-components';
-  
+import { ThemeContext } from '.././ThemeContext.js'; 
+
 const socket = io('http://localhost:3002');
 
 function Chat({person}) {
@@ -17,7 +17,8 @@ function Chat({person}) {
     const [currentUser, setCurrentUser] = useState(person);
     const currentUserEmail = localStorage.getItem('email');
 
-    let theme = useTheme();
+    const { theme } = useContext(ThemeContext);
+    
     useEffect(() => {
       if (person?.email) {
         getMessages(person.email);
