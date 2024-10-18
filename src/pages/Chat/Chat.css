@@ -9,7 +9,7 @@
     border-radius: 5px;
     overflow: hidden;
     background-color: #f9f9f9;
-    color: #00DDDD;
+    color: #00dddd;
 }
 
 .message-area {
@@ -78,7 +78,7 @@ input {
     right: 0px;
     top: 0px;
     background: none;
-    background-image: url('../../../assets/icons/exit.png');
+    background-image: url("../../../assets/icons/exit.png");
     border: none;
     transform: skewX(-0.03turn);
 }
@@ -95,7 +95,7 @@ input {
 }
 
 .contact:hover {
-    background-color: #004F4F;
+    background-color: #004f4f;
 }
 
 .profile-photo {
@@ -127,35 +127,35 @@ input {
     align-items: center; /* Aligns the image and message text vertically */
     margin: 10px 0;
     justify-content: flex-end;
-  }
-  
-  .left {
+}
+
+.left {
     flex-direction: row-reverse; /* Flip the order for right-aligned messages */
-  }
-  
-  .profile-photo {
+}
+
+.profile-photo {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     margin: 0 10px;
-  }
-  
-  .message-content {
+}
+
+.message-content {
     background-color: #f0f0f0;
     padding: 10px 15px;
     border-radius: 15px;
     max-width: 60%;
-  }
-  
-  .message-content p {
+}
+
+.message-content p {
     margin: 0;
     color: #333;
-  }
-  
-  .left .message-content {
+}
+
+.left .message-content {
     background-color: #d3ffd3; /* Background color for your messages */
-  }
-  
-  .right .message-content {
+}
+
+.right .message-content {
     background-color: #e6f7ff; /* Background color for the other person's messages */
-  }
+}

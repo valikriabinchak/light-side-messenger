@@ -1,35 +1,34 @@
-import './MessengerContainer.css';
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-import PeopleTab from './PeopleTab';
-import Chat from './Chat';
+import "./MessengerContainer.css";
+import { useState, useEffect } from "react";
+import io from "socket.io-client";
+import PeopleTab from "./PeopleTab";
+import Chat from "./Chat";
 
-// const socket = io('http://localhost:3002'); 
+// const socket = io('http://localhost:3002');
 // socket.connect("subscribe");
 const defaultUser = {
-  firstName: 'Select a user',
-  lastName: '',
-  email: '',
+    firstName: "Select a user",
+    lastName: "",
+    email: "",
 };
 
 function MessengerContainerComponent() {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [currentUser, setCurrentUser] = useState(defaultUser);
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState("");
+    const [currentUser, setCurrentUser] = useState(defaultUser);
 
-  useEffect(() => {
-    console.log("CURRENT USER UPDATED:", currentUser);
-  }, [currentUser]);
+    useEffect(() => {
+        console.log("CURRENT USER UPDATED:", currentUser);
+    }, [currentUser]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (input) {
-      //console.log("SOCKET: ", socket)
-      //socket.emit('message', input);
-      setInput(''); 
-    }
-  };
-
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (input) {
+            //console.log("SOCKET: ", socket)
+            //socket.emit('message', input);
+            setInput("");
+        }
+    };
 
     const handleUserChange = (friend) => {
         // Update the current user state
@@ -37,12 +36,12 @@ function MessengerContainerComponent() {
         // You might want to do additional actions here, like fetching chat history or profile details
     };
 
-  return (
-    <div>
-      <PeopleTab onUserChange={handleUserChange}></PeopleTab>
-      <Chat person={currentUser}></Chat>
-    </div>
-  );
+    return (
+        <div>
+            <PeopleTab onUserChange={handleUserChange}></PeopleTab>
+            <Chat person={currentUser}></Chat>
+        </div>
+    );
 }
 
 export default MessengerContainerComponent;

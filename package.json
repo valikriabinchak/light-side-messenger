@@ -6,8 +6,8 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.7.5",
@@ -22,6 +22,7 @@
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "test:open": "cypress open",
+    "test:e2e": "webpack serve -c config/webpack.config.js cypress open",
     "test:ct": "cypress run --component --browser chrome",
     "prepare": "husky"
   },

@@ -9,11 +9,18 @@ const config = {
         filename: 'index.js',
     },
     plugins: [ new HtmlWebpackPlugin({
-        template: '../templates/index.html'
+        template: path.resolve(__dirname, '../templates/index.html'), // Absolute path
+        filename: 'index.html',
+        title: 'My App',
     })],
     module: {
-        rules: [{
-            test: /\.jsx?$/,
+        rules: [
+        {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader', 'postcss-loader']
+        },
+        {
+            test: /\.(js|jsx)$/,
             use: [{
                 loader: 'babel-loader',
                 options: {
@@ -21,7 +28,10 @@ const config = {
                 }
             }], // Webpack process loaders from the end to the start
         }]
-    }
+    },
+    resolve: {
+        extensions: ['.js', '.jsx'], // Allow importing without specifying extensions
+    },
 };
 
 module.exports = config;

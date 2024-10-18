@@ -6,11 +6,11 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    color: #00DDDD;
+    color: #00dddd;
 }
 
 .contact:hover {
-    background-color: #004F4F;
+    background-color: #004f4f;
 }
 
 .profile-photo {
@@ -40,7 +40,8 @@
     display: flex;
 }
 
-#accept-friend-btn, #reject-friend-btn {
+#accept-friend-btn,
+#reject-friend-btn {
     min-width: 0px;
     width: 40px; /* Fixed width */
     margin: 2px;

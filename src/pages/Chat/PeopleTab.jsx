@@ -1,142 +1,150 @@
-import './PeopleTab.css';
+import "./PeopleTab.css";
 
-import { useEffect, useState } from 'react';
-import { lightTheme, darkTheme } from '../../components/themes';
-import { Container, Button, LabelField, InputField } from '../../components/styled-components';
-import PersonInfo from './PersonInfo';
-import { useTheme } from 'styled-components'; 
+import { useEffect, useState, useContext } from "react";
+import { lightTheme, darkTheme } from "../../components/themes";
+import { Container, Button, LabelField, InputField } from "../../components/styled-components";
+import PersonInfo from "./PersonInfo";
+import { ThemeContext } from "../../ThemeContext.js";
 
 function PeopleTab({ onUserChange }) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
+        getUserFriends();
+        getFriendRequests();
+    }, [token]);
 
-      getUserFriends();
-      getFriendRequests();
-    }, [token])
-
-    const [searchField, setSearchField] = useState('');
+    const [searchField, setSearchField] = useState("");
     const [friends, setFriends] = useState([]);
     const [requests, setRequests] = useState([]);
     const [filteredFriends, setFilteredFriends] = useState([]);
 
-    let theme = useTheme();
+    const { theme } = useContext(ThemeContext);
 
     function handleSearchField(value) {
-      console.log("FILTER: ", friends)
-      console.log("FILTER F: ", filteredFriends)
         setSearchField(value);
 
-        if (friends && friends.length && value){
-          setFilteredFriends(friends.filter(c => (c.firstName ? c.firstName.includes(value) : '')
-          || (c.lastName ? c.lastName.includes(value) : '')
-          || (c.email ? c.email.includes(value) : '')
-          ));
+        if (friends && friends.length && value) {
+            setFilteredFriends(
+                friends.filter(
+                    (c) =>
+                        (c.firstName ? c.firstName.includes(value) : "") ||
+                        (c.lastName ? c.lastName.includes(value) : "") ||
+                        (c.email ? c.email.includes(value) : ""),
+                ),
+            );
         }
     }
 
     const getUserFriends = async () => {
         try {
-          const token = localStorage.getItem('token');
+            const token = localStorage.getItem("token");
 
-          const response = await fetch('http://localhost:3002/user/friends', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}` 
+            const response = await fetch("http://localhost:3002/user/friends", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                setSearchField("");
+
+                const data = await response.json();
+
+                setFriends(data);
+                setFilteredFriends(data);
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
             }
-          });
-      
-          if (response.ok) {
-            setSearchField('');
-
-            const data = await response.json();
-
-            setFriends(data);
-            setFilteredFriends(data);
-          } else {
-            const error = await response.json();
-            alert(`Error: ${error.message}`);
-          }
         } catch (err) {
-          console.error('Login failed:', err);
-          alert('Can not get friends');
+            console.error("Login failed:", err);
+            alert("Can not get friends");
         }
-      };  
+    };
 
     const getFriendRequests = async () => {
-      try {
-        const token = localStorage.getItem('token');
+        try {
+            const token = localStorage.getItem("token");
 
-        const response = await fetch('http://localhost:3002/user/friends/requests', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` 
-          }
-        });
-    
-        if (response.ok) {
-          const data = await response.json();
+            const response = await fetch("http://localhost:3002/user/friends/requests", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-          setRequests(data);
-        } else {
-          const error = await response.json();
-          alert(`Error: ${error.message}`);
+            if (response.ok) {
+                const data = await response.json();
+
+                setRequests(data);
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (err) {
+            console.error("Login failed:", err);
+            alert("Can npt get requests to be a frend");
         }
-      } catch (err) {
-        console.error('Login failed:', err);
-        alert('Can npt get requests to be a frend');
-      }
-    };  
+    };
 
-    const sendFriendRequest = async () =>  {
-      try {
-          const token = localStorage.getItem('token');
+    const sendFriendRequest = async () => {
+        try {
+            const token = localStorage.getItem("token");
 
-          const response = await fetch('http://localhost:3002/user/friends/request', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              friendEmail: searchField
-            }),
-          });
-      
-          if (response.ok) {
-            const data = await response.json();
-          } else {
-            const error = await response.json();
-            alert(`Error: ${error.message}`);
-          }
-      } 
-      catch (err) {
-        console.error('Login failed:', err);
-        alert('Login failed. Try again later.');
-      }
-    };  
+            const response = await fetch("http://localhost:3002/user/friends/request", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    friendEmail: searchField,
+                }),
+            });
 
+            if (response.ok) {
+                const data = await response.json();
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (err) {
+            console.error("Login failed:", err);
+            alert("Login failed. Try again later.");
+        }
+    };
 
     return (
         <div className="sidebar">
-            <div className='header'>
+            <div className="header">
                 <div className="search-icon"></div>
-                <InputField type="text" theme={theme == darkTheme ? darkTheme : lightTheme} onChange={(e) => handleSearchField(e.target.value)}/>
-                <Button id='add-friend-btn' theme={theme == darkTheme ? darkTheme : lightTheme} onClick={() => sendFriendRequest()}>+</Button>
+                <InputField
+                    type="text"
+                    theme={theme == darkTheme ? darkTheme : lightTheme}
+                    onChange={(e) => handleSearchField(e.target.value)}
+                />
+                <Button
+                    id="add-friend-btn"
+                    theme={theme == darkTheme ? darkTheme : lightTheme}
+                    onClick={() => sendFriendRequest()}>
+                    +
+                </Button>
             </div>
 
             <div className="contact-list">
                 {filteredFriends.map((f) => (
-                    <PersonInfo  key={f.email} person={f} onClick={() => onUserChange(f)}></PersonInfo>
+                    <PersonInfo key={f.email} person={f} onClick={() => onUserChange(f)}></PersonInfo>
                 ))}
                 {requests.map((f) => (
-                    <PersonInfo  key={f.email} person={f} isRequest={true}></PersonInfo>
+                    <PersonInfo key={f.email} person={f} isRequest={true}></PersonInfo>
                 ))}
             </div>
         </div>
     );
-};
+}
 
 export default PeopleTab;
