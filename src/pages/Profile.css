@@ -3,14 +3,15 @@
     width: 70%;
     height: 100%;
     margin-left: 15%;
-    grid-template-columns: 25% auto 25%; 
-    gap: 10px; 
-    grid-template-rows: auto auto; 
+    grid-template-columns: 25% auto 25%;
+    gap: 10px;
+    grid-template-rows: auto auto;
     align-items: start;
-    background-color: #324B4B; 
+    background-color: #324b4b;
 }
 
-.photo, .main-data {
+.photo,
+.main-data {
     padding: 20px;
 }
 
@@ -28,30 +29,31 @@
 }
 
 .main-data {
-    grid-column: 2; 
+    grid-column: 2;
 }
 
 .main-data {
     display: flex;
-    flex-direction: column; 
-    gap: 10px; 
-    max-width: 400px; 
-  }
-  
-.main-data label {
-    margin-bottom: 5px; 
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
 }
 
-.main-data input[type="text"], .main-data input[type="number"] {
+.main-data label {
+    margin-bottom: 5px;
+}
+
+.main-data input[type="text"],
+.main-data input[type="number"] {
     padding: 8px;
     font-size: 14px;
-    width: 100%; 
+    width: 100%;
     box-sizing: border-box;
 }
 
 .switch {
     display: flex;
-    align-items: center; 
+    align-items: center;
 }
 
 .switch .slider {
@@ -65,17 +67,18 @@
     right: 0px;
     grid-column-start: 2;
     grid-column-end: 4;
-    margin: 20px; 
+    margin: 20px;
     align-items: center;
     justify-content: flex-end;
 }
 
-.action-btns button, .photo button {
-    background-color: #004F4F;
-    color: #00DDDD;
+.action-btns button,
+.photo button {
+    background-color: #004f4f;
+    color: #00dddd;
     margin: 7.5px;
 }
- 
+
 .action-btns .cancel-btn {
     background-color: #003737;
 }
@@ -95,7 +98,8 @@
     grid-column: 2;
 }
 
-.theme-switch label, .theme-switch input{
+.theme-switch label,
+.theme-switch input {
     position: relative;
     left: 50%;
 }

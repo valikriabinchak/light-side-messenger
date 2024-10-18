@@ -1,9 +1,9 @@
-import React from 'react'
-import App from './App'
+import React from "react";
+import App from "./App";
+import { customMount } from "../cypress/support/mount";
 
-describe('<App />', () => {
-  it('renders', () => {
-    // see: https://on.cypress.io/mounting-react
-    cy.mount(<App />)
-  })
-})
+describe("<App />", () => {
+    it("renders", () => {
+        customMount(<App />);
+    });
+});

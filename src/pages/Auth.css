@@ -1,4 +1,5 @@
-.RegisterComponent, .LoginComponent {
+.RegisterComponent,
+.LoginComponent {
     position: absolute;
     width: 300px;
     left: 50%;
@@ -8,9 +9,13 @@
 }
 
 form {
-    background-color: #3F4948;
+    background-color: #3f4948;
     padding: 20px;
     border-radius: 10px;
+}
+
+form .btn {
+    margin-top: 15px;
 }
 
 .create-account {
@@ -18,7 +23,7 @@ form {
     font-size: 12px;
     padding: 15px;
     border-radius: 10px;
-    border: 2px solid #3F4948;
+    border: 2px solid #3f4948;
     text-align: center;
 }
 
@@ -31,4 +36,15 @@ form {
     width: 100%;
     position: relative;
     margin: 5px 0px;
+}
+
+.password-fields {
+    display: "flex";
+    justify-content: "space-between";
+    align-items: "center";
+}
+
+.password-fields a {
+    text-align: right;
+    text-decoration: none;
 }
