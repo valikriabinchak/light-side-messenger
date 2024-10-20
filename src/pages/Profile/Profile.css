@@ -1,0 +1,109 @@
+.grid-container {
+    display: grid;
+    width: 70%;
+    height: 100%;
+    margin-left: 15%;
+    grid-template-columns: 25% auto 25%;
+    gap: 10px;
+    grid-template-rows: auto auto;
+    align-items: start;
+    background-color: #324b4b;
+}
+
+.photo,
+.main-data {
+    padding: 20px;
+}
+
+.photo {
+    grid-column: 1;
+}
+
+.photo button {
+    width: 100%;
+}
+
+.photo img {
+    width: 150px;
+    height: 150px;
+}
+
+.main-data {
+    grid-column: 2;
+}
+
+.main-data {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+}
+
+.main-data label {
+    margin-bottom: 5px;
+}
+
+.main-data input[type="text"],
+.main-data input[type="number"] {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.switch {
+    display: flex;
+    align-items: center;
+}
+
+.switch .slider {
+    margin-left: 10px;
+}
+
+.action-btns {
+    display: flex;
+    position: relative;
+    bottom: -100px;
+    right: 0px;
+    grid-column-start: 2;
+    grid-column-end: 4;
+    margin: 20px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.action-btns button,
+.photo button {
+    background-color: #004f4f;
+    color: #00dddd;
+    margin: 7.5px;
+}
+
+.action-btns .cancel-btn {
+    background-color: #003737;
+}
+
+.ages-theme-content {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+.ages-theme-content .age-field {
+    grid-column: 1;
+}
+
+.ages-theme-content .theme-switch {
+    grid-column: 2;
+}
+
+.theme-switch label,
+.theme-switch input {
+    position: relative;
+    left: 50%;
+}
+
+input {
+    margin: 5px 0px;
+}

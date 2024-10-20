@@ -1,0 +1,161 @@
+/* Chat.css */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: calc(100% - 280px);
+    margin-left: 280px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    color: #00dddd;
+}
+
+.message-area {
+    flex: 1;
+    padding: 10px;
+    padding-top: 90px;
+    overflow-y: auto; /* Allow scrolling for long chats */
+}
+
+.message {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 70%; /* Restrict message width */
+}
+
+.message.me {
+    background-color: #dcf8c6; /* Green background for user's messages */
+    align-self: flex-end; /* Align user's messages to the right */
+}
+
+.message.friend {
+    background-color: #fff; /* White background for friend's messages */
+    align-self: flex-start; /* Align friend's messages to the left */
+}
+
+.input-area {
+    display: flex;
+    padding: 10px;
+    background-color: #fff; /* White background for the input area */
+    padding: 15px 0px;
+}
+
+.input-area * {
+    margin: 5px;
+}
+
+.emoji-button {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.chat-header {
+    position: fixed;
+    left: 290px;
+    top: 0px;
+    width: 100%;
+    background-color: #003737;
+}
+
+.chat-container .chat-header .exit-btn {
+    min-width: 0px;
+    width: 32px;
+    height: 32px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    background: none;
+    background-image: url("../../../../assets/icons/exit.png");
+    border: none;
+    transform: skewX(-0.03turn);
+}
+
+.contact {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: none;
+    transition: background-color 0.3s;
+}
+
+.contact:hover {
+    background-color: #004f4f;
+}
+
+.profile-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: inline;
+}
+
+.contact-info {
+    flex: 1;
+}
+
+.contact-name {
+    font-weight: bold;
+}
+
+.last-message {
+    font-size: 0.9em;
+}
+
+.last-seen {
+    font-size: 0.8em;
+}
+
+.message-item {
+    display: flex;
+    align-items: center; /* Aligns the image and message text vertically */
+    margin: 10px 0;
+    justify-content: flex-end;
+}
+
+.left {
+    flex-direction: row-reverse; /* Flip the order for right-aligned messages */
+}
+
+.profile-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.message-content {
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 60%;
+}
+
+.message-content p {
+    margin: 0;
+    color: #333;
+}
+
+.left .message-content {
+    background-color: #d3ffd3; /* Background color for your messages */
+}
+
+.right .message-content {
+    background-color: #e6f7ff; /* Background color for the other person's messages */
+}

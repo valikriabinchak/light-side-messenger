@@ -1,48 +1,32 @@
-import React, { useState, useEffect  } from 'react';
-import './App.css';
-import AuthComponent from './pages/Auth.jsx';
-import MessengerContainerComponent from './pages/Chat/MessengerContainer.jsx';
-import { socket } from './services/socket'
-import { Routes, Route } from 'react-router-dom';
-import ProfileComponent from './pages/Profile.jsx';
+import React, { useContext } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import { lightTheme, darkTheme } from './components/themes.js';
-import { Body } from './components/styled-components.js';
-import ResetPasswordComponent from './pages/ResetPassword.jsx';
-import OneMoreStepComponent from './pages/OneMoreStep.jsx';
-import { ThemeProvider } from 'styled-components';
-import { ThemeContext } from 'styled-components'
+import "./App.css";
+import { lightTheme, darkTheme } from "./components/themes.js";
+import { Body } from "./components/styled-components.js";
+import { ThemeContext } from "./ThemeContext.js";
 
-// export const ThemeContext = React.createContext({
-//   theme: true,
-//   userToken: '',
-//   toggleTheme: () => {}
-// });
+import ResetPasswordComponent from "./pages/ResetPassword/ResetPassword.jsx";
+import OneMoreStepComponent from "./pages/OneMoreStep/OneMoreStep.jsx";
+import AuthComponent from "./pages/Auth/Auth.jsx";
+import MessengerContainerComponent from "./pages/MessengerContainer/MessengerContainer.jsx";
+import ProfileComponent from "./pages/Profile/Profile.jsx";
 
 function App() {
-  const [isDark, setTheme] = useState(true);
+    const { theme } = useContext(ThemeContext);
 
-  function toggleTheme(){
-    setTheme(prevtheme => !prevtheme);
-  };
-
-  // socket.connect();
-
-  return (
-      <Body className="app-container" theme={isDark ? lightTheme : darkTheme}>
-        <Routes>
-            <Route path="/" element={<AuthComponent isRegistration={false} isDarkTheme={isDark}/>} />
-            <Route path="/messenger" element={<MessengerComponent />} />
-            <Route path="/profile" element={<ProfileComponent isDarkTheme={isDark}/>} />
-        </Routes>
-      </Body>
-    </ThemeProvider>
-  );
+    return (
+        <Body className="app-container" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
+            <Routes>
+                <Route path="/" element={<AuthComponent isRegistration={false} />} />
+                <Route path="/messenger" element={<MessengerContainerComponent />} />
+                <Route path="/profile" element={<ProfileComponent />} />
+                <Route path="/resetting-password" element={<ResetPasswordComponent isEmailPage={false} />} />
+                <Route path="/email-send" element={<ResetPasswordComponent isEmailPage={true} />} />
+                <Route path="/one-more-step" element={<OneMoreStepComponent />} />
+            </Routes>
+        </Body>
+    );
 }
-
-
-{/* <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      
-</ThemeContext.Provider> */}
 
 export default App;

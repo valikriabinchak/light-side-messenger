@@ -1,0 +1,56 @@
+/* ContactList.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #003737;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    overflow-y: auto; /* Scroll if content overflows */
+}
+
+.sidebar h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.header {
+    position: relative;
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.header button {
+    height: 36px;
+    width: 36px;
+    margin-left: 10px;
+}
+
+.header .search-icon {
+    position: absolute;
+    background: none;
+    background-image: url("../../../../assets/icons/search.png");
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    height: 24px;
+    width: 24px;
+}
+
+.header input {
+    padding-left: 36px;
+    width: calc(100% - 36px - 32px - 36px);
+}
+
+.contact-list {
+    overflow-y: auto;
+}
+
+#add-friend-btn {
+    min-width: 0px;
+}
