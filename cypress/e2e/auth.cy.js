@@ -1,6 +1,6 @@
 describe( 'Auth Form E2E Test', () => {
   beforeEach( () => {
-    cy.visit( 'http://localhost:8080/' );
+    cy.visit( 'http://127.0.0.1:8080/' );
   } );
 
   it( 'should render the login form by default', () => {
