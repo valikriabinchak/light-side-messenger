@@ -34,7 +34,7 @@ body {
 .header .search-icon {
     position: absolute;
     background: none;
-    background-image: url("../../../assets/icons/search.png");
+    background-image: url("../../../../assets/icons/search.png");
     top: 50%;
     left: 10px;
     transform: translateY(-50%);

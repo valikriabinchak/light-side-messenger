@@ -1,10 +1,10 @@
 import "./PeopleTab.css";
 
-import { useEffect, useState, useContext } from "react";
-import { lightTheme, darkTheme } from "../../components/themes";
-import { Container, Button, LabelField, InputField } from "../../components/styled-components";
-import PersonInfo from "./PersonInfo";
-import { ThemeContext } from "../../ThemeContext.js";
+import React, { useEffect, useState, useContext } from "react";
+import { lightTheme, darkTheme } from "../../themes.js";
+import { Container, Button, LabelField, InputField } from "../../styled-components.js";
+import PersonInfo from "../PersonInfo/PersonInfo.jsx";
+import { ThemeContext } from "../../../ThemeContext.js";
 
 function PeopleTab({ onUserChange }) {
     const token = localStorage.getItem("token");
@@ -124,12 +124,12 @@ function PeopleTab({ onUserChange }) {
                 <div className="search-icon"></div>
                 <InputField
                     type="text"
-                    theme={theme == darkTheme ? darkTheme : lightTheme}
+                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
                     onChange={(e) => handleSearchField(e.target.value)}
                 />
                 <Button
                     id="add-friend-btn"
-                    theme={theme == darkTheme ? darkTheme : lightTheme}
+                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
                     onClick={() => sendFriendRequest()}>
                     +
                 </Button>

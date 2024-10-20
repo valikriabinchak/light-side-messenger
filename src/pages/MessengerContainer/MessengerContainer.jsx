@@ -1,8 +1,8 @@
 import "./MessengerContainer.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
-import PeopleTab from "./PeopleTab";
-import Chat from "./Chat";
+import PeopleTab from "../../components/ChatFeature/PeopleTab/PeopleTab";
+import Chat from "../../components/ChatFeature/Chat/Chat";
 
 // const socket = io('http://localhost:3002');
 // socket.connect("subscribe");

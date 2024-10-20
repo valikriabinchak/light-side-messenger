@@ -3,9 +3,9 @@ import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import "./ResetPassword.css";
-import { lightTheme, darkTheme } from "../components/themes";
-import { Container, Button, LabelField, InputField } from "../components/styled-components";
-import { ThemeContext } from ".././ThemeContext.js";
+import { lightTheme, darkTheme } from "../../components/themes.js";
+import { Container, Button, LabelField, InputField } from "../../components/styled-components.js";
+import { ThemeContext } from "../../ThemeContext.js";
 
 function ResetPasswordComponent({ isEmailPage }) {
     const { id } = useParams();
@@ -64,11 +64,11 @@ function ResetPasswordComponent({ isEmailPage }) {
         <div className={isEmailPage ? "EmailSubmittingComponent" : "ResettingPasswordComponent"}>
             {isEmailPage ? <p className="title">Reset your password</p> : <p className="title">Resetting password</p>}
 
-            <Container className="main-fields" theme={theme == darkTheme ? darkTheme : lightTheme}>
+            <Container className="main-fields" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                 <form>
                     {isEmailPage ? (
                         <>
-                            <LabelField theme={theme == darkTheme ? darkTheme : lightTheme}>
+                            <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                                 Enter your user account's verified email address and we will send you a password reset
                                 link.
                             </LabelField>
@@ -77,7 +77,7 @@ function ResetPasswordComponent({ isEmailPage }) {
                                 onChange={(e) => setEmailValue(e.target.value)}
                                 type="text"
                                 name="username"
-                                theme={theme == darkTheme ? darkTheme : lightTheme}
+                                theme={theme == "darkTheme" ? darkTheme : lightTheme}
                             />
                             <br />
 
@@ -85,7 +85,7 @@ function ResetPasswordComponent({ isEmailPage }) {
                                 type="button"
                                 className="btn"
                                 onClick={() => sendResetEmail()}
-                                theme={theme == darkTheme ? darkTheme : lightTheme}>
+                                theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                                 Send password reset email
                             </Button>
                             <br />
@@ -93,24 +93,24 @@ function ResetPasswordComponent({ isEmailPage }) {
                                 type="button"
                                 className="btn"
                                 onClick={() => navigate("/")}
-                                theme={theme == darkTheme ? darkTheme : lightTheme}>
+                                theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                                 Back to Sign in
                             </Button>
                             <br />
                         </>
                     ) : (
                         <>
-                            <LabelField theme={theme == darkTheme ? darkTheme : lightTheme}>New Password</LabelField>
+                            <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>New Password</LabelField>
                             <br />
                             <InputField
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 type="password"
                                 name="new-password"
-                                theme={theme == darkTheme ? darkTheme : lightTheme}
+                                theme={theme == "darkTheme" ? darkTheme : lightTheme}
                             />
                             <br />
 
-                            <LabelField theme={theme == darkTheme ? darkTheme : lightTheme}>
+                            <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                                 Repeat new password
                             </LabelField>
                             <br />
@@ -118,7 +118,7 @@ function ResetPasswordComponent({ isEmailPage }) {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 type="password"
                                 name="password-confirm"
-                                theme={theme == darkTheme ? darkTheme : lightTheme}
+                                theme={theme == "darkTheme" ? darkTheme : lightTheme}
                             />
                             <br />
 
@@ -126,7 +126,7 @@ function ResetPasswordComponent({ isEmailPage }) {
                                 type="button"
                                 className="btn"
                                 onClick={() => (newPassword === confirmPassword ? updatePassword() : undefined)}
-                                theme={theme == darkTheme ? darkTheme : lightTheme}>
+                                theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                                 Reset
                             </Button>
                             <br />

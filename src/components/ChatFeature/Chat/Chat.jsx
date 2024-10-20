@@ -4,10 +4,10 @@ import "./Chat.css";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
-import { lightTheme, darkTheme } from "../../components/themes";
-import { Container, Button, LabelField, InputField } from "../../components/styled-components";
-import PersonInfo from "./PersonInfo";
-import { ThemeContext } from "../../ThemeContext.js";
+import { lightTheme, darkTheme } from "../../themes.js";
+import { Container, Button, LabelField, InputField } from "../../styled-components.js";
+import PersonInfo from "../PersonInfo/PersonInfo.jsx";
+import { ThemeContext } from "../../../ThemeContext.js";
 
 const socket = io("http://localhost:3002");
 
@@ -113,9 +113,7 @@ function Chat({ person }) {
                 <button className="exit-btn" onClick={() => navigate("/")}></button>
             </div>
 
-            <Container
-                className="message-area"
-                theme={theme == darkTheme ? darkTheme : lightTheme ? lightTheme : darkTheme}>
+            <Container className="message-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                 {messages.map((message, index) => (
                     <div
                         key={index}
@@ -132,15 +130,15 @@ function Chat({ person }) {
                     </div>
                 ))}
             </Container>
-            <Container className="input-area">
+            <Container className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                 <Button className="emoji-button">😊</Button>
                 <InputField
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
                     type="text"
-                    theme={theme == darkTheme ? darkTheme : lightTheme}
+                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
                 />
-                <Button theme={theme == darkTheme ? darkTheme : lightTheme} onClick={sendMessage}>
+                <Button theme={theme == "darkTheme" ? darkTheme : lightTheme} onClick={sendMessage}>
                     Send
                 </Button>
             </Container>

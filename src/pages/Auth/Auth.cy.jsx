@@ -1,10 +1,10 @@
 import React from "react";
-import Chat from "./Chat";
+import AuthComponent from "./Auth";
 import { customMount } from "../../../cypress/support/mount";
 
-describe("<Chat />", () => {
+describe("<AuthComponent />", () => {
     it("renders", () => {
         // see: https://on.cypress.io/mounting-react
-        customMount(<Chat />);
+        customMount(<AuthComponent isRegistration={false} />);
     });
 });

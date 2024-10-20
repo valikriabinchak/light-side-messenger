@@ -1,8 +1,8 @@
 import "./PersonInfo.css";
-import { lightTheme, darkTheme } from "../../components/themes";
-import { Container, Button, LabelField, InputField } from "../../components/styled-components";
-import { ThemeContext } from "../../ThemeContext.js";
-import { useContext } from "react";
+import { lightTheme, darkTheme } from "../../themes.js";
+import { Container, Button, LabelField, InputField } from "../../styled-components.js";
+import { ThemeContext } from "../../../ThemeContext.js";
+import React, { useContext } from "react";
 
 function PersonInfo({ person, isRequest, onClick }) {
     const { theme } = useContext(ThemeContext);
@@ -80,13 +80,13 @@ function PersonInfo({ person, isRequest, onClick }) {
                 <div class="friend-request-btns">
                     <Button
                         id="accept-friend-btn"
-                        theme={theme == darkTheme ? darkTheme : lightTheme}
+                        theme={theme == "darkTheme" ? darkTheme : lightTheme}
                         onClick={() => acceptFriend(person.email)}>
                         +
                     </Button>
                     <Button
                         id="reject-friend-btn"
-                        theme={theme == darkTheme ? darkTheme : lightTheme}
+                        theme={theme == "darkTheme" ? darkTheme : lightTheme}
                         onClick={() => rejectFriend(person.email)}>
                         -
                     </Button>

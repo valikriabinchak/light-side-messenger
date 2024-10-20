@@ -6,11 +6,11 @@ import { lightTheme, darkTheme } from "./components/themes.js";
 import { Body } from "./components/styled-components.js";
 import { ThemeContext } from "./ThemeContext.js";
 
-import ResetPasswordComponent from "./pages/ResetPassword.jsx";
-import OneMoreStepComponent from "./pages/OneMoreStep.jsx";
-import AuthComponent from "./pages/Auth.jsx";
-import MessengerContainerComponent from "./pages/Chat/MessengerContainer.jsx";
-import ProfileComponent from "./pages/Profile.jsx";
+import ResetPasswordComponent from "./pages/ResetPassword/ResetPassword.jsx";
+import OneMoreStepComponent from "./pages/OneMoreStep/OneMoreStep.jsx";
+import AuthComponent from "./pages/Auth/Auth.jsx";
+import MessengerContainerComponent from "./pages/MessengerContainer/MessengerContainer.jsx";
+import ProfileComponent from "./pages/Profile/Profile.jsx";
 
 function App() {
     const { theme } = useContext(ThemeContext);

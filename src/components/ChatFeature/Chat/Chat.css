@@ -78,7 +78,7 @@ input {
     right: 0px;
     top: 0px;
     background: none;
-    background-image: url("../../../assets/icons/exit.png");
+    background-image: url("../../../../assets/icons/exit.png");
     border: none;
     transform: skewX(-0.03turn);
 }

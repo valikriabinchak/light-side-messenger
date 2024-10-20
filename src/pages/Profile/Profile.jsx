@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
-import { lightTheme, darkTheme } from "../components/themes";
-import { Container, Button, LabelField, InputField } from "../components/styled-components";
+import { lightTheme, darkTheme } from "../../components/themes.js";
+import { Container, Button, LabelField, InputField } from "../../components/styled-components.js";
 import { useTheme } from "styled-components";
-import { ThemeContext } from ".././ThemeContext.js";
+import { ThemeContext } from "../../ThemeContext.js";
 
 function ProfileComponent() {
     const [firstName, setFirstName] = useState("");

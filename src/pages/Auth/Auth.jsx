@@ -2,9 +2,9 @@ import "./Auth.css";
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
-import { lightTheme, darkTheme } from "../components/themes";
-import { Container, Button, LabelField, InputField } from "../components/styled-components";
-import { ThemeContext } from ".././ThemeContext.js";
+import { lightTheme, darkTheme } from "../../components/themes.js";
+import { Container, Button, LabelField, InputField } from "../../components/styled-components.js";
+import { ThemeContext } from "../../ThemeContext.js";
 
 function AuthComponent({ isRegistration }) {
     const [isReg, setIsReg] = useState(isRegistration);
