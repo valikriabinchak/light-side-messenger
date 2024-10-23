@@ -128,8 +128,9 @@ function Chat({ person }) {
                     </div>
                 ))}
             </Body>
+            {showPicker && <Picker className="emojiSelector" onEmojiClick={onEmojiClick} />}
             <Body className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                <Button c lassName="emoji-btn" onClick={() => setShowPicker((prev) => !prev)}>
+                <Button className="emoji-btn" onClick={() => setShowPicker((prev) => !prev)}>
                     😊
                 </Button>
 
