@@ -8,6 +8,7 @@ import { lightTheme, darkTheme } from "../../themes.js";
 import { Container, Button, LabelField, InputField } from "../../styled-components.js";
 import PersonInfo from "../PersonInfo/PersonInfo.jsx";
 import { ThemeContext } from "../../../ThemeContext.js";
+import Picker from "emoji-picker-react";
 
 const socket = io("http://localhost:3002");
 
@@ -15,6 +16,8 @@ function Chat({ person }) {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [currentUser, setCurrentUser] = useState(person);
+    const [showPicker, setShowPicker] = useState(false);
+
     const currentUserEmail = localStorage.getItem("email");
 
     const { theme } = useContext(ThemeContext);
@@ -44,21 +47,10 @@ function Chat({ person }) {
         };
     }, [currentUserEmail]);
 
-    //   useEffect(() => {
-    //     console.log("CHAT PERSON HAS BEEN CHANGED", person);
-    //     setCurrentUser(person);
-    //     if (person?.email) {
-    //       getMessages(person.email); // Fetch messages for the selected person
-    //   }
-    //   const currentUserEmail = localStorage.getItem('email');
-    //     socket.on('newMessage', (message) => {
-    //       setMessages((prev) => [...prev, message]);
-    //   });
-
-    //   return () => {
-    //       socket.off('newMessage'); // Clean up listener
-    //   };
-    // }, [person]);
+    const onEmojiClick = (emojiObject) => {
+        setNewMessage((prevMessage) => prevMessage + emojiObject.emoji);
+        setShowPicker(false); // Close picker after selecting an emoji
+    };
 
     const getMessages = async (friendEmail) => {
         try {
@@ -131,7 +123,12 @@ function Chat({ person }) {
                 ))}
             </Container>
             <Container className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                <Button className="emoji-button">😊</Button>
+                {showPicker && <Picker className="emojiSelector" onEmojiClick={onEmojiClick} />}
+            </Container>
+            <Container className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
+                <Button c lassName="emoji-button" onClick={() => setShowPicker((prev) => !prev)}>
+                    😊
+                </Button>
                 <InputField
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
