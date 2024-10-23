@@ -58,6 +58,7 @@ function AuthComponent({ isRegistration }) {
                 const data = await response.json();
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("email", email);
+
                 navigate("messenger");
             } else {
                 const error = await response.json();

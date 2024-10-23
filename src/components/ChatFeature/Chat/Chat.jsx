@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
 import { lightTheme, darkTheme } from "../../themes.js";
-import { Container, Button, LabelField, InputField } from "../../styled-components.js";
+import { Container, Button, LabelField, InputField, Body } from "../../styled-components.js";
 import PersonInfo from "../PersonInfo/PersonInfo.jsx";
 import { ThemeContext } from "../../../ThemeContext.js";
 import Picker from "emoji-picker-react";
@@ -25,6 +25,8 @@ function Chat({ person }) {
     useEffect(() => {
         if (person?.email) {
             getMessages(person.email);
+            setCurrentUser(person);
+            socket.emit("registerEmail", localStorage.getItem("email"));
         }
     }, [person]);
 
@@ -101,11 +103,15 @@ function Chat({ person }) {
     return (
         <div className="chat-container">
             <div className="chat-header">
-                <PersonInfo person={currentUser}></PersonInfo>
+                <PersonInfo
+                    isHeader={true}
+                    person={currentUser}
+                    onClick={() => {}}
+                    isFriendRequest={false}></PersonInfo>
                 <button className="exit-btn" onClick={() => navigate("/")}></button>
             </div>
 
-            <Container className="message-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
+            <Body className="message-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                 {messages.map((message, index) => (
                     <div
                         key={index}
@@ -121,14 +127,12 @@ function Chat({ person }) {
                         />
                     </div>
                 ))}
-            </Container>
-            <Container className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                {showPicker && <Picker className="emojiSelector" onEmojiClick={onEmojiClick} />}
-            </Container>
-            <Container className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                <Button c lassName="emoji-button" onClick={() => setShowPicker((prev) => !prev)}>
+            </Body>
+            <Body className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
+                <Button c lassName="emoji-btn" onClick={() => setShowPicker((prev) => !prev)}>
                     😊
                 </Button>
+
                 <InputField
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
@@ -138,7 +142,10 @@ function Chat({ person }) {
                 <Button theme={theme == "darkTheme" ? darkTheme : lightTheme} onClick={sendMessage}>
                     Send
                 </Button>
-            </Container>
+                <Button className="send-other-btn" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
+                    +
+                </Button>
+            </Body>
         </div>
     );
 }
