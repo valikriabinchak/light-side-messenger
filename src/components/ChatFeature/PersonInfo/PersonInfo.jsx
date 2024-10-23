@@ -78,6 +78,10 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
             const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
 
             // Check conditions and return formatted time
+            if (Number.isNaN(diffInHours)) {
+                return "";
+            }
+
             if (diffInMinutes < 0.5) {
                 return "Online";
             } else if (diffInMinutes < 30) {
@@ -88,9 +92,6 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
                 const hours = past.getHours().toString().padStart(2, "0");
                 const minutes = past.getMinutes().toString().padStart(2, "0");
 
-                if (Number.isNaN(hours) || Number.isNaN(minutes)) {
-                    return "long time ago";
-                }
                 return `${hours}:${minutes}`;
             }
         } catch {
@@ -112,11 +113,19 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
                 {!isHeader ? (
                     <span className="last-message">{currentUser.lastMessage || ""}</span>
                 ) : (
-                    <span className="last-seen">{"Seen " + formatTime(currentUser.lastSeen) || "long time ago"}</span>
+                    <span className="last-seen">
+                        {formatTime(currentUser.lastSeen) !== "" && formatTime(currentUser.lastSeen) !== "Online"
+                            ? "Seen " + formatTime(currentUser.lastSeen)
+                            : formatTime(currentUser.lastSeen)}
+                    </span>
                 )}
             </div>
-            {!isHeader ? (
-                <span className="last-seen">{"Seen " + formatTime(currentUser.lastSeen) || "long time ago"}</span>
+            {!isFriendRequest && !isHeader ? (
+                <span className="last-seen">
+                    {formatTime(currentUser.lastSeen) !== "" && formatTime(currentUser.lastSeen) !== "Online"
+                        ? "Seen " + formatTime(currentUser.lastSeen)
+                        : formatTime(currentUser.lastSeen)}
+                </span>
             ) : (
                 <></>
             )}

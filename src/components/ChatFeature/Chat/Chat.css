@@ -47,14 +47,6 @@
     margin: 5px;
 }
 
-.emoji-button {
-    border: none;
-    background: transparent;
-    font-size: 20px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
 input {
     flex: 1;
     padding: 10px;
@@ -68,34 +60,31 @@ input {
     top: 0px;
     width: 100%;
     background-color: #003737;
+    height: 65px;
+}
+
+.chat-header .contact {
+    cursor: default;
+}
+
+.chat-header .contact:hover {
+    background: none;
 }
 
 .chat-container .chat-header .exit-btn {
     min-width: 0px;
-    width: 32px;
-    height: 32px;
+    width: 42px;
+    height: 42px;
     position: fixed;
     right: 0px;
     top: 0px;
     background: none;
     background-image: url("../../../../assets/icons/exit.png");
+    background-position-x: calc(50% + 5px);
+    background-repeat: no-repeat;
     border: none;
     transform: skewX(-0.03turn);
-}
-
-.contact {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
     cursor: pointer;
-    background: none;
-    transition: background-color 0.3s;
-}
-
-.contact:hover {
-    background-color: #004f4f;
 }
 
 .profile-photo {
@@ -158,4 +147,18 @@ input {
 
 .right .message-content {
     background-color: #e6f7ff; /* Background color for the other person's messages */
+}
+
+.emoji-btn {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0px 5px 0px 15px;
+}
+
+.emoji-btn,
+.send-other-btn {
+    min-width: 0px;
+    width: 40px;
 }

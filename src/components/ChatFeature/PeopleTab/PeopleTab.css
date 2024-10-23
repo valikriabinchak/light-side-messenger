@@ -44,7 +44,7 @@ body {
 
 .header input {
     padding-left: 36px;
-    width: calc(100% - 36px - 32px - 36px);
+    width: calc(100% - 56px);
 }
 
 .contact-list {

@@ -22,6 +22,7 @@ function PeopleTab({ onUserChange }) {
     const { theme } = useContext(ThemeContext);
 
     function handleSearchField(value) {
+        value = value.trim();
         setSearchField(value);
 
         if (friends && friends.length && value) {
@@ -130,7 +131,9 @@ function PeopleTab({ onUserChange }) {
                 <Button
                     id="add-friend-btn"
                     theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                    onClick={() => sendFriendRequest()}>
+                    onClick={() => {
+                        if (searchField.trim()) sendFriendRequest();
+                    }}>
                     +
                 </Button>
             </div>
@@ -140,7 +143,12 @@ function PeopleTab({ onUserChange }) {
                     <PersonInfo key={f.email} person={f} onClick={() => onUserChange(f)}></PersonInfo>
                 ))}
                 {requests.map((f) => (
-                    <PersonInfo key={f.email} person={f} isRequest={true}></PersonInfo>
+                    <PersonInfo
+                        key={f.email}
+                        person={f}
+                        onClick={() => {}}
+                        isRequest={true}
+                        isFriendRequest={true}></PersonInfo>
                 ))}
             </div>
         </div>
