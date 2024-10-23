@@ -2,10 +2,16 @@ import "./PersonInfo.css";
 import { lightTheme, darkTheme } from "../../themes.js";
 import { Container, Button, LabelField, InputField } from "../../styled-components.js";
 import { ThemeContext } from "../../../ThemeContext.js";
-import React, { useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 
-function PersonInfo({ person, isRequest, onClick }) {
+function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
+    const [currentUser, setCurrentUser] = useState(person);
     const { theme } = useContext(ThemeContext);
+
+    useEffect(() => {
+        setCurrentUser(person);
+        console.log("PersonInfo person updated:", person); // Log when person changes
+    }, [person]);
 
     const acceptFriend = async (friendEmail) => {
         try {
@@ -61,33 +67,72 @@ function PersonInfo({ person, isRequest, onClick }) {
         }
     };
 
+    function formatTime(pastDate) {
+        try {
+            const now = new Date();
+            const past = new Date(pastDate); // Assume pastDate is a date string or Date object
+            const diffInMilliseconds = now - past;
+
+            // Calculate the difference in minutes and hours
+            const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+            const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
+
+            // Check conditions and return formatted time
+            if (diffInMinutes < 0.5) {
+                return "Online";
+            } else if (diffInMinutes < 30) {
+                return `${diffInMinutes} min ago`;
+            } else if (diffInHours < 1) {
+                return "1h ago";
+            } else {
+                const hours = past.getHours().toString().padStart(2, "0");
+                const minutes = past.getMinutes().toString().padStart(2, "0");
+
+                if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+                    return "long time ago";
+                }
+                return `${hours}:${minutes}`;
+            }
+        } catch {
+            return "long time ago";
+        }
+    }
+
     return (
-        <div className="contact" onClick={() => onClick(person)}>
+        <div className="contact" onClick={() => onClick(currentUser)}>
             <img
                 src="https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
-                alt={`${person.email} profile`}
+                alt={`${currentUser.email} profile`}
                 className="profile-photo"
             />
             <div className="contact-info">
-                <span className="contact-name">{person.firstName || "Unknown"}</span>
-                <span className="contact-name">{person.secondName || ""}</span>
+                <span className="contact-name">{currentUser.firstName || ""}</span>
+                <span className="contact-name">{currentUser.secondName || ""}</span>
                 <br></br>
-                <span className="last-message">{person.lastMessage || "No message available"}</span>
+                {!isHeader ? (
+                    <span className="last-message">{currentUser.lastMessage || ""}</span>
+                ) : (
+                    <span className="last-seen">{"Seen " + formatTime(currentUser.lastSeen) || "long time ago"}</span>
+                )}
             </div>
-            <span className="last-seen">{person.lastSeen || "Last seen unavailable"}</span>
+            {!isHeader ? (
+                <span className="last-seen">{"Seen " + formatTime(currentUser.lastSeen) || "long time ago"}</span>
+            ) : (
+                <></>
+            )}
 
-            {isRequest ? (
+            {isFriendRequest ? (
                 <div class="friend-request-btns">
                     <Button
                         id="accept-friend-btn"
                         theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                        onClick={() => acceptFriend(person.email)}>
+                        onClick={() => acceptFriend(currentUser.email)}>
                         +
                     </Button>
                     <Button
                         id="reject-friend-btn"
                         theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                        onClick={() => rejectFriend(person.email)}>
+                        onClick={() => rejectFriend(currentUser.email)}>
                         -
                     </Button>
                 </div>

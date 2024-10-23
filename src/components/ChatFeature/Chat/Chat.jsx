@@ -22,6 +22,8 @@ function Chat({ person }) {
     useEffect(() => {
         if (person?.email) {
             getMessages(person.email);
+            setCurrentUser(person);
+            socket.emit("registerEmail", localStorage.getItem("email"));
         }
     }, [person]);
 
@@ -109,7 +111,11 @@ function Chat({ person }) {
     return (
         <div className="chat-container">
             <div className="chat-header">
-                <PersonInfo person={currentUser}></PersonInfo>
+                <PersonInfo
+                    isHeader={true}
+                    person={currentUser}
+                    onClick={() => {}}
+                    isFriendRequest={false}></PersonInfo>
                 <button className="exit-btn" onClick={() => navigate("/")}></button>
             </div>
 
