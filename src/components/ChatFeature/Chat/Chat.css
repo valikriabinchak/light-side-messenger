@@ -39,8 +39,7 @@
 .input-area {
     display: flex;
     padding: 10px;
-    background-color: #fff; /* White background for the input area */
-    padding: 15px 0px;
+    background-color: #fff;
 }
 
 .input-area * {
@@ -148,6 +147,9 @@ input {
 .right .message-content {
     background-color: #e6f7ff; /* Background color for the other person's messages */
 }
+
+.emojiSelector {
+    width: 100% !important;
 
 .emoji-btn {
     border: none;
