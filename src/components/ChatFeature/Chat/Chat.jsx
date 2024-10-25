@@ -9,55 +9,35 @@ import { Container, Button, LabelField, InputField, Body } from "../../styled-co
 import PersonInfo from "../PersonInfo/PersonInfo.jsx";
 import { ThemeContext } from "../../../ThemeContext.js";
 import Picker from "emoji-picker-react";
-
-const socket = io("http://localhost:3002");
+import { useChatMessenger } from "../../../hooks/useChatMessenger.js";
 
 function Chat({ person }) {
-    const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState("");
+    const {
+        messages,
+        newMessage,
+        setNewMessage,
+        showPicker,
+        setShowPicker,
+        onEmojiClick,
+        sendMessage,
+        currentUserEmail,
+        emitRegisterEmail,
+        setMessages,
+    } = useChatMessenger(person);
     const [currentUser, setCurrentUser] = useState(person);
-    const [showPicker, setShowPicker] = useState(false);
-
-    const currentUserEmail = localStorage.getItem("email");
-
     const { theme } = useContext(ThemeContext);
 
     useEffect(() => {
         if (person?.email) {
             getMessages(person.email);
             setCurrentUser(person);
-            socket.emit("registerEmail", localStorage.getItem("email"));
+            emitRegisterEmail();
         }
     }, [person]);
-
-    // Set up the socket listener when the chat component mounts
-    useEffect(() => {
-        const messageListener = (message) => {
-            console.log("New message received:", message);
-            setMessages((prev) => [...prev, message]);
-        };
-
-        if (currentUserEmail) {
-            // Subscribe to the unique channel for the current user
-            socket.on(`newMessage:${currentUserEmail}`, messageListener);
-        }
-
-        return () => {
-            if (currentUserEmail) {
-                socket.off(`newMessage:${currentUserEmail}`, messageListener); // Clean up
-            }
-        };
-    }, [currentUserEmail]);
-
-    const onEmojiClick = (emojiObject) => {
-        setNewMessage((prevMessage) => prevMessage + emojiObject.emoji);
-        setShowPicker(false); // Close picker after selecting an emoji
-    };
 
     const getMessages = async (friendEmail) => {
         try {
             const token = localStorage.getItem("token");
-
             const response = await fetch(`http://localhost:3002/user/messages?friendEmail=${friendEmail}`, {
                 method: "GET",
                 headers: {
@@ -68,8 +48,6 @@ function Chat({ person }) {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Fetched messages:", data);
-                // Update the state with the fetched messages
                 setMessages(data);
             } else {
                 const error = await response.json();
@@ -78,24 +56,6 @@ function Chat({ person }) {
         } catch (err) {
             console.error("Error fetching messages:", err);
             alert("Failed to fetch messages. Please try again later.");
-        }
-    };
-
-    const sendMessage = () => {
-        if (newMessage.trim() && person?.email) {
-            const messageData = {
-                sender: currentUserEmail,
-                receiver: person.email,
-                content: newMessage,
-                timestamp: new Date(),
-            };
-
-            // Emit the message to the backend
-            socket.emit("sendMessage", messageData);
-
-            // Optimistically update the UI
-            setMessages((prev) => [...prev, messageData]);
-            setNewMessage("");
         }
     };
 

@@ -5,71 +5,11 @@ import PropTypes from "prop-types"; // Import PropTypes
 import { lightTheme, darkTheme } from "../../components/themes.js";
 import { Container, Button, LabelField, InputField } from "../../components/styled-components.js";
 import { ThemeContext } from "../../ThemeContext.js";
+import { useAuth } from "../../hooks/useAuth.js";
 
-function AuthComponent({ isRegistration }) {
-    const [isReg, setIsReg] = useState(isRegistration);
-    const [firstName, setFirstName] = useState("");
-    const [email, setemail] = useState("");
-    const [password, setPassword] = useState("");
-
+function AuthComponent() {
+    const { isReg, setFirstName, setEmail, setPassword, toggleForm, handleRegister, handleLogin } = useAuth();
     const { theme } = useContext(ThemeContext);
-
-    const toggleForm = () => setIsReg(!isReg);
-
-    const navigate = useNavigate();
-
-    const handleRegister = async () => {
-        try {
-            const response = await fetch("http://localhost:3002/user/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    firstName,
-                    email,
-                    password,
-                }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                toggleForm();
-            } else {
-                const error = await response.json();
-                alert(`Error: ${error.message}`);
-            }
-        } catch (err) {
-            console.error("Registration failed:", err);
-            alert("Registration failed. Try again later.");
-        }
-    };
-
-    const handleLogin = async () => {
-        try {
-            const response = await fetch("http://localhost:3002/user/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("email", email);
-
-                navigate("messenger");
-            } else {
-                const error = await response.json();
-                alert(`Error: ${error.message}`);
-            }
-        } catch (err) {
-            console.error("Login failed:", err);
-            alert("Login failed. Try again later.");
-        }
-    };
-    console.log("THEME: ", theme);
     return (
         <div className={isReg ? "RegisterComponent" : "LoginComponent"}>
             <form>
@@ -90,7 +30,7 @@ function AuthComponent({ isRegistration }) {
                 <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>Login</LabelField>
                 <br />
                 <InputField
-                    onChange={(e) => setemail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     type="text"
                     name="login"
                     theme={theme == "darkTheme" ? darkTheme : lightTheme}
