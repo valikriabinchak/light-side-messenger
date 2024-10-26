@@ -37,7 +37,7 @@ function Chat({ person }) {
     const getMessages = async (friendEmail) => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:3002/messages?friendEmail=${friendEmail}`, {
+            const response = await fetch(`http://localhost:3002/user/messages?friendEmail=${friendEmail}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,

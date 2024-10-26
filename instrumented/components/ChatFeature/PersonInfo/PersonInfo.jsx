@@ -17,7 +17,7 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/friends/accept", {
+            const response = await fetch("http://localhost:3002/user/friends/accept", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,7 +28,7 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
             if (response.ok) {
                 const data = await response.json();
-
+                // Handle successful response (e.g., update state, show a message)
                 console.log("Friend request accepted:", data);
             } else {
                 const error = await response.json();
@@ -44,7 +44,7 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/friends/reject", {
+            const response = await fetch("http://localhost:3002/user/friends/reject", {
                 method: "DELETE", // Use DELETE method to remove the friend request
                 headers: {
                     "Content-Type": "application/json",

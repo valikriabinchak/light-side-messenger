@@ -24,10 +24,11 @@ const config = {
                 use: [ {
                     loader: 'babel-loader',
                     options: {
-                        presets: [ '@babel/preset-env', ]
+                        presets: [ '@babel/preset-env' ]
                     }
                 } ], // Webpack process loaders from the end to the start
-            } ]
+            }
+        ]
     },
     resolve: {
         extensions: [ '.js', '.jsx' ], // Allow importing without specifying extensions

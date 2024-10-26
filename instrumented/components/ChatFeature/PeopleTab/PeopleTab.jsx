@@ -41,7 +41,7 @@ function PeopleTab({ onUserChange }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/friends", {
+            const response = await fetch("http://localhost:3002/user/friends", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -70,7 +70,7 @@ function PeopleTab({ onUserChange }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/friends/requests", {
+            const response = await fetch("http://localhost:3002/user/friends/requests", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -96,7 +96,7 @@ function PeopleTab({ onUserChange }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/friends/request", {
+            const response = await fetch("http://localhost:3002/user/friends/request", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
