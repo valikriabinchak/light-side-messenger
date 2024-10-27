@@ -2,17 +2,24 @@ const HtmlWebpackPlugin = require( "html-webpack-plugin" );
 const path = require( "path" );
 
 const config = {
-    entry: path.resolve( __dirname, '../src/index.js' ),
     mode: "development",
     output: {
         path: path.resolve( __dirname, '../dist' ),
         filename: 'index.js',
     },
-    plugins: [ new HtmlWebpackPlugin( {
-        template: path.resolve( __dirname, '../templates/index.html' ), // Absolute path
-        filename: 'index.html',
-        title: 'My App',
-    } ) ],
+    entry: {
+        app: './src/index.js',
+    },
+    plugins: [
+        new HtmlWebpackPlugin( {
+            title: 'Production',
+        } ),
+    ],
+    output: {
+        filename: '[name].bundle.js',
+        path: path.resolve( __dirname, 'dist' ),
+        clean: true,
+    },
     module: {
         rules: [
             {
