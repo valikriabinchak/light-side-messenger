@@ -4,10 +4,6 @@ const path = require( "path" );
 const config = {
     mode: "development",
     devtool: 'inline-source-map',
-    output: {
-        path: path.resolve( __dirname, '../dist' ),
-        filename: 'index.js',
-    },
     entry: {
         app: './src/index.js',
     },
@@ -17,8 +13,8 @@ const config = {
         } ),
     ],
     output: {
-        filename: '[name].bundle.js',
-        path: path.resolve( __dirname, 'dist' ),
+        filename: 'index.bundle.js',
+        path: path.resolve( __dirname, '../dist' ),
         clean: true,
     },
     module: {
