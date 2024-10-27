@@ -5,7 +5,7 @@ const config = {
     mode: "development",
     devtool: 'inline-source-map',
     entry: {
-        app: './src/index.js',
+        app: '../src/index.js',
     },
     plugins: [
         new HtmlWebpackPlugin( {
