@@ -1,42 +1,41 @@
-const HtmlWebpackPlugin = require( "html-webpack-plugin" );
-const path = require( "path" );
+const path = require( 'path' );
+const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 
-const config = {
-    mode: "development",
-    devtool: 'inline-source-map',
-    entry: {
-        app: './src/index.js',
-    },
-    plugins: [
-        new HtmlWebpackPlugin( {
-            title: 'Production',
-        } ),
-    ],
+module.exports = {
+    entry: './src/index.js',
     output: {
-        filename: 'index.bundle.js',
-        path: path.resolve( __dirname, '../dist' ),
-        clean: true,
+        filename: 'bundle.js',
+        path: path.resolve( __dirname, 'dist' ),
+        publicPath: '/',
     },
+    mode: 'development',
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ]
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                },
             },
             {
-                test: /\.(js|jsx)$/,
-                use: [ {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [ '@babel/preset-env' ]
-                    }
-                } ], // Webpack process loaders from the end to the start
-            }
-        ]
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ],
+            },
+        ],
     },
     resolve: {
-        extensions: [ '.js', '.jsx' ], // Allow importing without specifying extensions
+        extensions: [ '.js', '.jsx' ],
     },
+    devServer: {
+        static: path.join( __dirname, 'public' ),
+        port: 3000,
+        open: true,
+        hot: true,
+    },
+    plugins: [
+        new HtmlWebpackPlugin( {
+            template: './public/index.html',
+        } ),
+    ],
 };
-
-module.exports = config;
