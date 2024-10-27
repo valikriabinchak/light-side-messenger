@@ -8,13 +8,13 @@ import { ThemeProvider } from "./ThemeContext";
 
 const root = ReactDOM.createRoot( document.getElementById( "root" ) );
 root.render(
-    <React>
+    <React.StrictMode>
         <ThemeProvider>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
         </ThemeProvider>
-    </React>,
+    </React.StrictMode>,
 );
 
 reportWebVitals();

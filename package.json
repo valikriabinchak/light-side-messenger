@@ -24,6 +24,7 @@
     "start:dev": "webpack serve -c config/webpack.config.js",
     "build": "webpack -c config/webpack.config.production.js",
     "build:dev": "webpack -c config/webpack.config.development.js",
+    "build:heroku": "react-scripts build",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "test:open": "cypress open",
