@@ -3,7 +3,7 @@ const baseConfig = require( './webpack.config' );
 
 const config = {
     mode: "production",
-    entry: './src/index.js',
+    entry: path.resolve( __dirname, '../src/index.js' ),
     output: {
         path: path.resolve( __dirname, 'dist' ),
         filename: 'bundle.js'
