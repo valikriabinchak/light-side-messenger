@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { lightTheme, darkTheme } from "../../components/themes.js";
-import { Container, Button, LabelField, InputField } from "../../components/styled-components.js";
+import { Container, Button, LabelField, InputField, Body } from "../../components/styled-components.js";
 import { ThemeContext } from "../../ThemeContext.js";
 import { useAuth } from "../../hooks/useAuth.js";
 
@@ -12,8 +12,10 @@ function AuthComponent() {
     const { theme } = useContext(ThemeContext);
 
     return (
-        <div className={isReg ? "RegisterComponent" : "LoginComponent"}>
-            <form>
+        <Container
+            theme={theme == "darkTheme" ? darkTheme : lightTheme}
+            className={isReg ? "RegisterComponent" : "LoginComponent"}>
+            <Container className="form-container">
                 {isReg && (
                     <>
                         <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>Username</LabelField>
@@ -76,12 +78,12 @@ function AuthComponent() {
                 ) : (
                     <></>
                 )}
-            </form>
+            </Container>
 
             {isReg ? (
                 <></>
             ) : (
-                <div className="create-account">
+                <Container className="create-account">
                     <a href="#">Sign in with QR code</a>
                     <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>
                         New to LightSideMessenger?{" "}
@@ -89,9 +91,9 @@ function AuthComponent() {
                             Create an account
                         </a>
                     </LabelField>
-                </div>
+                </Container>
             )}
-        </div>
+        </Container>
     );
 }
 

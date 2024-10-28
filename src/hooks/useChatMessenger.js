@@ -11,6 +11,7 @@ export const useChatMessenger = ( person ) => {
     const [ showPicker, setShowPicker ] = useState( false );
 
     const currentUserEmail = localStorage.getItem( "email" );
+    const currentUserImagePath = localStorage.getItem( "imagePath" );
 
     useEffect( () => {
         const messageListener = ( message ) => {
@@ -62,6 +63,7 @@ export const useChatMessenger = ( person ) => {
         onEmojiClick,
         sendMessage,
         currentUserEmail,
+        currentUserImagePath,
         emitRegisterEmail,
         setMessages
     };

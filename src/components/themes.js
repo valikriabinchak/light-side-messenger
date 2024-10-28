@@ -4,7 +4,7 @@ export const lightTheme = {
     containerBg: "#C0BBBB",
     inputBg: "#FFFFFF",
     btnBg: "#00DDDD",
-    btnText: "#00DDDD",
+    btnText: "#003737",
 };
 
 export const darkTheme = {

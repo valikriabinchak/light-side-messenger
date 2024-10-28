@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import "./Chat.css";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
@@ -20,6 +20,7 @@ function Chat({ person }) {
         onEmojiClick,
         sendMessage,
         currentUserEmail,
+        currentUserImagePath,
         emitRegisterEmail,
         setMessages,
     } = useChatMessenger(person);
@@ -33,6 +34,59 @@ function Chat({ person }) {
             emitRegisterEmail();
         }
     }, [person]);
+
+    const [selectedText, setSelectedText] = useState("");
+    const [translatedText, setTranslatedText] = useState("");
+    const [detectedLanguage, setDetectedLanguage] = useState("");
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+
+    // Detect text selection and position of the selection
+    const handleMouseUp = () => {
+        const text = window.getSelection().toString().trim();
+        if (text) {
+            const { x, y } = window.getSelection().getRangeAt(0).getBoundingClientRect();
+            setSelectedText(text);
+            setPosition({ x: x + window.scrollX, y: y + window.scrollY - 20 });
+
+            // Delay request to avoid sending it too often
+            fetchTranslation(text);
+        }
+    };
+
+    // Fetch translation from Google Translate API
+    const fetchTranslation = async (text) => {
+        try {
+            const response = await fetch(
+                "https://translation.googleapis.com/language/translate/v2?key=AIzaSyASQjZMFY5P9Ebc1mEZSmKzFxXpM_lXX5s",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ q: text, target: "uk", format: "text" }),
+                },
+            );
+            const data = await response.json();
+            setTranslatedText(data.data.translations[0].translatedText);
+            setDetectedLanguage(data.data.translations[0].detectedSourceLanguage);
+        } catch (error) {
+            console.error("Translation error:", error);
+        }
+    };
+
+    // Clear selection when clicking outside
+    const clearSelection = () => {
+        setSelectedText("");
+        setTranslatedText("");
+        setDetectedLanguage("");
+    };
+
+    useEffect(() => {
+        document.addEventListener("mouseup", handleMouseUp);
+        document.addEventListener("mousedown", clearSelection);
+        return () => {
+            document.removeEventListener("mouseup", handleMouseUp);
+            document.removeEventListener("mousedown", clearSelection);
+        };
+    }, []);
 
     const getMessages = async (friendEmail) => {
         try {
@@ -67,6 +121,7 @@ function Chat({ person }) {
                     person={currentUser}
                     onClick={() => {}}
                     isFriendRequest={false}></PersonInfo>
+                <button className="profile-btn" onClick={() => navigate("/profile")}></button>
                 <button className="exit-btn" onClick={() => navigate("/")}></button>
             </div>
 
@@ -81,11 +136,31 @@ function Chat({ person }) {
 
                         <img
                             className="profile-photo"
-                            src="https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
+                            src={
+                                (message.sender === currentUserEmail ? currentUserImagePath : person.imagePath) ||
+                                "./../../../assets/icons/user.png"
+                            }
                             alt="profile"
                         />
                     </div>
                 ))}
+                {selectedText && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: position.y,
+                            left: position.x,
+                            backgroundColor: "white",
+                            border: "1px solid black",
+                            borderRadius: "5px",
+                            padding: "5px",
+                            zIndex: 1000,
+                        }}>
+                        <p>
+                            {translatedText} ({detectedLanguage})
+                        </p>
+                    </div>
+                )}
             </Body>
             {showPicker && <Picker className="emojiSelector" onEmojiClick={onEmojiClick} />}
             <Body className="input-area" theme={theme == "darkTheme" ? darkTheme : lightTheme}>

@@ -43,6 +43,8 @@ export const useAuth = () => {
                 const data = await response.json();
                 localStorage.setItem( "token", data.token );
                 localStorage.setItem( "email", email );
+                localStorage.setItem( "imagePath", data.imagePath );
+
                 navigate( "/messenger" ); // Перенаправлення до месенджера після входу
             } else {
                 const error = await response.json();

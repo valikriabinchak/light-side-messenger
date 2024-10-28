@@ -6,15 +6,15 @@
     top: 50%;
     transform: translate(-50%, -50%);
     width: 300px;
+    border-radius: 10px;
 }
 
-form {
-    background-color: #3f4948;
+.form-container {
     padding: 20px;
     border-radius: 10px;
 }
 
-form .btn {
+.form-container .btn {
     margin-top: 15px;
 }
 

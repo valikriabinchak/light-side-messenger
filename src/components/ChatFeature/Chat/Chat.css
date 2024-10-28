@@ -70,7 +70,8 @@ input {
     background: none;
 }
 
-.chat-container .chat-header .exit-btn {
+.chat-container .chat-header .exit-btn,
+.chat-container .chat-header .profile-btn {
     min-width: 0px;
     width: 42px;
     height: 42px;
@@ -84,6 +85,13 @@ input {
     border: none;
     transform: skewX(-0.03turn);
     cursor: pointer;
+}
+
+.chat-container .chat-header .profile-btn {
+    right: 42px;
+    top: 0px;
+    transform: none;
+    background-image: url("../../../../assets/icons/user.png");
 }
 
 .profile-photo {

@@ -10,7 +10,6 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
     useEffect(() => {
         setCurrentUser(person);
-        console.log("PersonInfo person updated:", person); // Log when person changes
     }, [person]);
 
     const acceptFriend = async (friendEmail) => {
@@ -28,8 +27,6 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
             if (response.ok) {
                 const data = await response.json();
-
-                console.log("Friend request accepted:", data);
             } else {
                 const error = await response.json();
                 alert(`Error: ${error.message}`);
@@ -55,8 +52,6 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
             if (response.ok) {
                 const data = await response.json();
-                // Handle successful response (e.g., update state, show a message)
-                console.log("Friend request rejected:", data);
             } else {
                 const error = await response.json();
                 alert(`Error: ${error.message}`);
@@ -101,11 +96,7 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
     return (
         <div className="contact" onClick={() => onClick(currentUser)}>
-            <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
-                alt={`${currentUser.email} profile`}
-                className="profile-photo"
-            />
+            <img src={currentUser.imagePath || ""} className="profile-photo" />
             <div className="contact-info">
                 <span className="contact-name">{currentUser.firstName || ""}</span>
                 <span className="contact-name">{currentUser.secondName || ""}</span>
