@@ -1,5 +1,5 @@
 import "./Auth.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { lightTheme, darkTheme } from "../../components/themes.js";
@@ -41,7 +41,7 @@ function AuthComponent() {
                 <br />
                 <div className="password-fields">
                     <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme}>Password</LabelField>
-                    <a href="email-send">Forgot password?</a>
+                    <Link to="/email-send">Forgot password?</Link>
                 </div>
                 <InputField
                     onChange={(e) => setPassword(e.target.value)}
@@ -86,10 +86,7 @@ function AuthComponent() {
                 <Container className="create-account">
                     <a href="#">Sign in with QR code</a>
                     <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                        New to LightSideMessenger?{" "}
-                        <a href="#" onClick={toggleForm}>
-                            Create an account
-                        </a>
+                        New to LightSideMessenger? <Link onClick={toggleForm}>Create an account</Link>
                     </LabelField>
                 </Container>
             )}

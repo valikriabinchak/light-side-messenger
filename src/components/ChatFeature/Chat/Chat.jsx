@@ -175,7 +175,10 @@ function Chat({ person }) {
                     type="text"
                     theme={theme == "darkTheme" ? darkTheme : lightTheme}
                 />
-                <Button theme={theme == "darkTheme" ? darkTheme : lightTheme} onClick={sendMessage}>
+                <Button
+                    className="send-btn"
+                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
+                    onClick={sendMessage}>
                     Send
                 </Button>
                 <Button className="send-other-btn" theme={theme == "darkTheme" ? darkTheme : lightTheme}>

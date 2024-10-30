@@ -2,3 +2,83 @@ h2 {
     color: green;
     text-align: center;
 }
+
+.container {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background-color: #003737;
+}
+
+/* PeopleTab hidden initially */
+.people-tab {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #003737;
+}
+
+/* Chat component: Full-width when menu is closed */
+.chat {
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease;
+}
+
+.chat.visible {
+    display: block;
+    opacity: 1;
+}
+
+.menu-btn {
+    display: none;
+}
+
+.close-menu-btn {
+    display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .people-tab {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #003737;
+        transform: translateX(-110%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .people-tab.open {
+        transform: translateX(0);
+    }
+
+    .chat {
+        display: none;
+        height: calc(100vh - 50px); /* Adjust for potential top menu button spacing */
+    }
+
+    .menu-btn {
+        display: block;
+        position: absolute;
+        top: 0px;
+        left: 7px;
+        z-index: 1001;
+        background-color: transparent;
+        border: none;
+        font-size: 24px;
+        color: #00dddd;
+        cursor: pointer;
+        width: 24px;
+        min-width: 0px;
+    }
+
+    .close-menu-btn {
+        display: block;
+        width: calc(100% - 20px);
+    }
+}

@@ -3,6 +3,7 @@ import { lightTheme, darkTheme } from "../../themes.js";
 import { Container, Button, LabelField, InputField } from "../../styled-components.js";
 import { ThemeContext } from "../../../ThemeContext.js";
 import React, { useEffect, useContext, useState } from "react";
+import defaultUserIcon from "./../../../../assets/icons/user.png";
 
 function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
     const [currentUser, setCurrentUser] = useState(person);
@@ -96,10 +97,10 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
     return (
         <div className="contact" onClick={() => onClick(currentUser)}>
-            <img src={currentUser.imagePath || ""} className="profile-photo" />
+            <img src={currentUser.imagePath || defaultUserIcon} className="profile-photo" />
             <div className="contact-info">
-                <span className="contact-name">{currentUser.firstName || ""}</span>
-                <span className="contact-name">{currentUser.secondName || ""}</span>
+                <span className="contact-name">{currentUser.firstName || ""} </span>
+                <span className="contact-name">{currentUser.lastName || ""}</span>
                 <br></br>
                 {!isHeader ? (
                     <span className="last-message">{currentUser.lastMessage || ""}</span>

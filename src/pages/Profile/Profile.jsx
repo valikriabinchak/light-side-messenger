@@ -5,6 +5,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { lightTheme, darkTheme } from "../../components/themes.js";
 import { Body, Container, Button, LabelField, InputField } from "../../components/styled-components.js";
 import { ThemeContext } from "../../ThemeContext.js";
+import defaultUserIcon from "./../../../assets/icons/user.png";
 
 function ProfileComponent() {
     const [isEditMode, changeMode] = useState(false);
@@ -102,7 +103,7 @@ function ProfileComponent() {
     return (
         <Container className="grid-container" theme={theme === "darkTheme" ? darkTheme : lightTheme}>
             <Container className="item photo" theme={theme === "darkTheme" ? darkTheme : lightTheme}>
-                <img src={formData.imagePath || "./../../../assets/icons/user.png"} alt="User profile photo" />
+                <img src={formData.imagePath || defaultUserIcon} alt="User profile photo" />
                 {isEditMode ? (
                     <Button theme={theme === darkTheme ? darkTheme : lightTheme} onClick={toggleDialog}>
                         Change photo
