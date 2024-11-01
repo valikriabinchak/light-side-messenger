@@ -4,6 +4,13 @@ import { customMount } from "../../../cypress/support/mount";
 import Chat from "../../components/ChatFeature/Chat/Chat";
 import PeopleTab from "../../components/ChatFeature/PeopleTab/PeopleTab";
 
+beforeEach(() => {
+    localStorage.setItem(
+        "token",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvYkBleGFtcGxlLmNvbSIsImlhdCI6MTcyOTg4MTMwMiwiZXhwIjoxNzMwMDU0MTAyfQ.3LCbfXARqa8QkdU0uAYKlDZPobMlaY6buiAMEdrw-r0",
+    );
+});
+
 describe("<MessengerContainerComponent />", () => {
     it("renders", () => {
         customMount(<MessengerContainerComponent />);
@@ -18,8 +25,10 @@ const defaultUser = {
 
 const handleUserChange = () => {};
 
-describe("MessengerContainerComponent", () => {
+describe("<MessengerContainerComponent />", () => {
     it("Renders header", () => {
+        cy.viewport(1280, 900);
+
         customMount(
             <MessengerContainerComponent>
                 <PeopleTab onUserChange={handleUserChange}></PeopleTab>
@@ -29,23 +38,6 @@ describe("MessengerContainerComponent", () => {
 
         cy.contains("Select a user").should("be.visible");
 
-        cy.get(".chat-container").should("contain.text", "Select a user");
-    });
-
-    it("should update currentUser when a user is selected", () => {
-        customMount(
-            <MessengerContainerComponent>
-                <PeopleTab onUserChange={handleUserChange}></PeopleTab>
-                <Chat person={defaultUser}></Chat>
-            </MessengerContainerComponent>,
-        );
-
-        cy.get(".user-select-button") // Replace with your actual selector
-            .first() // Selecting the first user for example
-            .click();
-
-        // Now check if the currentUser is updated in the Chat component
-        cy.get(".chat-username") // Replace with the actual selector for displaying username in the Chat
-            .should("contain", "Expected User FirstName"); // Replace with the expected name
+        cy.get(".chat-header .contact").should("contain.text", "Select a user");
     });
 });

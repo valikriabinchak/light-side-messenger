@@ -10,6 +10,8 @@ const defaultUser = {
 
 describe("<Chat />", () => {
     it("renders", () => {
+        cy.viewport(1900, 1200);
+
         customMount(<Chat person={defaultUser} />);
     });
 });

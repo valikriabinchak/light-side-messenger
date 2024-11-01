@@ -1,8 +1,39 @@
 describe( "Chat Component E2E Tests", () => {
     beforeEach( () => {
         localStorage.setItem( "token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvYkBleGFtcGxlLmNvbSIsImlhdCI6MTcyOTg4MTMwMiwiZXhwIjoxNzMwMDU0MTAyfQ.3LCbfXARqa8QkdU0uAYKlDZPobMlaY6buiAMEdrw-r0" );
+        localStorage.setItem( "email", "me@example.com" );
+        cy.visit( 'http://localhost:8080/messenger' );
 
-        cy.visit( 'http://localhost:3000/messenger' );
+        cy.intercept( "GET", "http://localhost:3002/friends", {
+            statusCode: 200,
+            body: [
+                {
+                    firstName: "Diana",
+                    lastName: "Prince",
+                    email: "diana@example.com",
+                    lastSeen: "2023-10-31T14:00:00Z",
+                    imagePath: "/images/diana.png",
+                },
+                {
+                    firstName: "Clark",
+                    lastName: "Kent",
+                    email: "me@example.com",
+                    lastSeen: "2023-10-31T13:30:00Z",
+                    imagePath: "/images/clark.png",
+                },
+            ],
+        } ).as( "getFriends" );
+
+        cy.intercept( "GET", "http://localhost:3002/messages?friendEmail=diana@example.com", {
+            statusCode: 200,
+            body: [
+                { senderEmail: "diana@example.com", receiver: "me@example.com", content: "Hey there!", timestamp: "2023-11-01T10:00:00Z" },
+                { senderEmail: "me@example.com", receiver: "diana@example.com", content: "Hello!", timestamp: "2023-11-01T10:01:00Z" }
+            ],
+        } ).as( "getMessages" );
+
+        cy.wait( "@getFriends" );
+
     } );
 
     it( "should display the chat header with the correct user", () => {
@@ -14,7 +45,7 @@ describe( "Chat Component E2E Tests", () => {
     it( "should send a message after selecting a friend", () => {
         const messageText = "Hello, this is a test message!";
 
-        cy.get( '.contact-list' ).find( '.contact' ).first().click();
+        cy.get( '.people-tab' ).find( '.contact' ).first().click();
 
         cy.get( '.message-field' ).type( messageText );
 
@@ -35,11 +66,11 @@ describe( "Chat Component E2E Tests", () => {
     } );
 
     it( "should show messages from the user and others correctly", () => {
-        cy.get( '.contact-list' ).find( '.contact' ).first().click();
+        cy.get( '.people-tab' ).find( '.contact' ).first().click();
 
         const messages = [
-            { sender: "user@example.com", content: "sss" },
-            { sender: "friend@example.com", content: "Hi" },
+            { sender: "diana@example.com", content: "Hey there!" },
+            { sender: "me@example.com", content: "Hello!" },
         ];
 
         messages.forEach( ( message ) => {

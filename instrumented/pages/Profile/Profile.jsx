@@ -1,128 +1,235 @@
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
-import React, { useContext, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useContext, useState } from "react";
 
 import { lightTheme, darkTheme } from "../../components/themes.js";
-import { Container, Button, LabelField, InputField } from "../../components/styled-components.js";
-import { useTheme } from "styled-components";
+import { Body, Container, Button, LabelField, InputField } from "../../components/styled-components.js";
 import { ThemeContext } from "../../ThemeContext.js";
+import defaultUserIcon from "./../../../assets/icons/user.png";
 
 function ProfileComponent() {
-    const [firstName, setFirstName] = useState("");
-    const [emailAddress, setEmailAddress] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [ages, setAges] = useState(18);
-    const [nativeLanguage, setNativeLanguage] = useState(18);
+    const [isEditMode, changeMode] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [newImagePath, setNewImagePath] = useState("");
+
+    // Function to handle dialog open/close
+    const toggleDialog = () => setIsDialogOpen((prev) => !prev);
+
     const { theme, toggleTheme } = useContext(ThemeContext);
 
     const navigate = useNavigate();
 
     function toggleLocalStorageTheme() {
-        localStorage.setItem("theme", theme === "lightTheme" ? "darkTheme" : "lightTheme");
+        if (isEditMode) {
+            localStorage.setItem("theme", theme === "lightTheme" ? "darkTheme" : "lightTheme");
 
-        toggleTheme();
+            toggleTheme();
+        }
     }
 
-    function handleProfileUpdate() {
-        const token = localStorage.getItem("token");
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        ages: "",
+        nativeLanguage: "",
+        imagePath: "",
+    });
 
-        fetch("http://localhost:3002/user/profile", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                firstName,
-                lastName,
-                emailAddress,
-                ages,
-                nativeLanguage,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => console.log("Profile updated:", data))
-            .catch((error) => console.error("Error:", error));
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({ ...prevState, [name]: value }));
+    };
+
+    useEffect(() => {
+        getProfileData();
+        // if (process && process.env) {
+        //     console.log("ENV: ", process.env);
+        //     console.log("MODE: ", setMode);
+        // }
+    }, []);
+
+    async function getProfileData() {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch("http://localhost:3002/user/profile", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                setFormData(data);
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (err) {
+            console.error("Profile failed:", err);
+            alert("Can not get profile data");
+        }
+    }
+
+    async function saveData() {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch("http://localhost:3002/user/profile", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                changeMode(false);
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (err) {
+            console.error("Profile failed:", err);
+            alert("Can not get profile data");
+        }
     }
 
     return (
-        <Container className="grid-container" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-            <Container className="item photo" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                <img src="../../assets/icons/user.png" alt="User profile photo" />
-                <Button theme={theme == darkTheme ? darkTheme : lightTheme}>Change photo</Button>
+        <Container className="grid-container" theme={theme === "darkTheme" ? darkTheme : lightTheme}>
+            <Container className="item photo" theme={theme === "darkTheme" ? darkTheme : lightTheme}>
+                <img src={formData.imagePath || defaultUserIcon} alt="User profile photo" />
+                {isEditMode ? (
+                    <Button theme={theme === darkTheme ? darkTheme : lightTheme} onClick={toggleDialog}>
+                        Change photo
+                    </Button>
+                ) : (
+                    <></>
+                )}
             </Container>
-            <Container className="item main-data" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>First name</LabelField>
+
+            <Container className="item main-data" theme={theme === "darkTheme" ? darkTheme : lightTheme}>
+                <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme}>First name</LabelField>
                 <InputField
+                    readOnly={!isEditMode}
+                    theme={theme === "darkTheme" ? darkTheme : lightTheme}
                     type="text"
-                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
                 />
 
-                <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>Last name</LabelField>
+                <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme}>Last name</LabelField>
                 <InputField
+                    readOnly={!isEditMode}
+                    theme={theme === "darkTheme" ? darkTheme : lightTheme}
                     type="text"
-                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                    onChange={(e) => setLastName(e.target.value)}
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
                 />
 
-                <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>Email address</LabelField>
+                <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme}>Email address</LabelField>
                 <InputField
+                    readOnly={!isEditMode}
+                    theme={theme === "darkTheme" ? darkTheme : lightTheme}
                     type="text"
-                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                    onChange={(e) => setEmailAddress(e.target.value)}
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                 />
 
-                <Container className="ages-theme-content" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                    <Container className="age-field" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                        <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>Ages</LabelField>
+                <Container theme={theme === "darkTheme" ? darkTheme : lightTheme} className="ages-theme-content">
+                    <Container theme={theme === "darkTheme" ? darkTheme : lightTheme} className="age-field">
+                        <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme}>Ages</LabelField>
                         <InputField
+                            readOnly={!isEditMode}
+                            theme={theme === "darkTheme" ? darkTheme : lightTheme}
                             type="number"
-                            theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                            onChange={(e) => setAges(e.target.value)}
+                            name="ages"
+                            value={formData.ages}
+                            onChange={handleInputChange}
                         />
                     </Container>
 
-                    <Container className="theme-switch" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                        <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>Theme</LabelField>
-                        <LabelField className="switch" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
+                    <Container theme={theme === "darkTheme" ? darkTheme : lightTheme} className="theme-switch">
+                        <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme}>Theme</LabelField>
+                        <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme} className="switch">
                             <InputField
+                                theme={theme === "darkTheme" ? darkTheme : lightTheme}
                                 type="checkbox"
                                 className="toggle-theme-btn"
-                                theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                                onChange={() => toggleLocalStorageTheme()}
+                                onChange={toggleLocalStorageTheme}
+                                checked={theme === "darkTheme"}
                             />
                             <span className="slider round"></span>
                         </LabelField>
                     </Container>
                 </Container>
 
-                <LabelField theme={theme == "darkTheme" ? darkTheme : lightTheme}>
+                <LabelField theme={theme === "darkTheme" ? darkTheme : lightTheme}>
                     Native language (translation code)
                 </LabelField>
                 <InputField
+                    readOnly={!isEditMode}
+                    theme={theme === "darkTheme" ? darkTheme : lightTheme}
                     type="text"
-                    theme={theme == "darkTheme" ? darkTheme : lightTheme}
-                    onChange={(e) => setNativeLanguage(e.target.value)}
+                    name="nativeLanguage"
+                    value={formData.nativeLanguage}
+                    onChange={handleInputChange}
                 />
             </Container>
 
-            <Container className="item action-btns" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                <Button onClick={() => navigate("/email-send")} theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                    Reset passoword
+            <Container theme={theme === "darkTheme" ? darkTheme : lightTheme} className="item action-btns">
+                <Button theme={theme === "darkTheme" ? darkTheme : lightTheme} onClick={() => navigate("/email-send")}>
+                    Reset password
                 </Button>
-                <Button theme={theme == "darkTheme" ? darkTheme : lightTheme}>Edit</Button>
-                <Button onClick={() => navigate("/messenger")} theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                    Save
-                </Button>
-                <Button
-                    onClick={() => navigate(-1)}
-                    className="cancel-btn"
-                    theme={theme == "darkTheme" ? darkTheme : lightTheme}>
-                    Cancel
-                </Button>
+                {isEditMode ? (
+                    <div>
+                        <Button theme={theme === "darkTheme" ? darkTheme : lightTheme} onClick={() => saveData()}>
+                            Save
+                        </Button>
+                        <Button
+                            theme={theme === "darkTheme" ? darkTheme : lightTheme}
+                            onClick={() => changeMode(false)}
+                            className="cancel-btn">
+                            Cancel
+                        </Button>
+                    </div>
+                ) : (
+                    <div>
+                        <Button theme={theme === "darkTheme" ? darkTheme : lightTheme} onClick={() => changeMode(true)}>
+                            Edit
+                        </Button>
+                        <Button
+                            theme={theme === "darkTheme" ? darkTheme : lightTheme}
+                            onClick={() => navigate(-1)}
+                            className="cancel-btn">
+                            Back
+                        </Button>
+                    </div>
+                )}
             </Container>
+
+            {isDialogOpen && (
+                <Body theme={theme === "darkTheme" ? darkTheme : lightTheme} className="dialog">
+                    <h3>Update Profile Photo</h3>
+                    <InputField
+                        theme={theme === "darkTheme" ? darkTheme : lightTheme}
+                        type="text"
+                        name="imagePath"
+                        onChange={handleInputChange}
+                    />
+                    <Button theme={theme === "darkTheme" ? darkTheme : lightTheme} onClick={toggleDialog}>
+                        Close
+                    </Button>
+                </Body>
+            )}
         </Container>
     );
 }

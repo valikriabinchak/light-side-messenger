@@ -14,15 +14,31 @@ const defaultUser = {
 
 function MessengerContainerComponent() {
     const [currentUser, setCurrentUser] = useState(defaultUser);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const handleUserChange = (friend) => {
         setCurrentUser(friend);
+        setMenuOpen(false);
     };
 
     return (
-        <div>
-            <PeopleTab onUserChange={handleUserChange}></PeopleTab>
-            <Chat person={currentUser}></Chat>
+        <div className="container">
+            {!menuOpen && (
+                <button className="menu-btn" onClick={() => setMenuOpen(true)}>
+                    ☰
+                </button>
+            )}
+
+            <div className={`people-tab ${menuOpen ? "open" : ""}`}>
+                <button className="close-menu-btn" onClick={() => setMenuOpen(false)}>
+                    ☰
+                </button>
+                <PeopleTab onUserChange={handleUserChange} />
+            </div>
+
+            <div className={`chat ${!menuOpen ? "visible" : ""}`}>
+                <Chat person={currentUser} />
+            </div>
         </div>
     );
 }

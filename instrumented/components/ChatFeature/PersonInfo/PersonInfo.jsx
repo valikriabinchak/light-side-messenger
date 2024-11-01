@@ -3,6 +3,7 @@ import { lightTheme, darkTheme } from "../../themes.js";
 import { Container, Button, LabelField, InputField } from "../../styled-components.js";
 import { ThemeContext } from "../../../ThemeContext.js";
 import React, { useEffect, useContext, useState } from "react";
+import defaultUserIcon from "./../../../../assets/icons/user.png";
 
 function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
     const [currentUser, setCurrentUser] = useState(person);
@@ -10,14 +11,13 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
     useEffect(() => {
         setCurrentUser(person);
-        console.log("PersonInfo person updated:", person); // Log when person changes
     }, [person]);
 
     const acceptFriend = async (friendEmail) => {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/user/friends/accept", {
+            const response = await fetch("http://localhost:3002/friends/accept", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,8 +28,6 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
             if (response.ok) {
                 const data = await response.json();
-                // Handle successful response (e.g., update state, show a message)
-                console.log("Friend request accepted:", data);
             } else {
                 const error = await response.json();
                 alert(`Error: ${error.message}`);
@@ -44,7 +42,7 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/user/friends/reject", {
+            const response = await fetch("http://localhost:3002/friends/reject", {
                 method: "DELETE", // Use DELETE method to remove the friend request
                 headers: {
                     "Content-Type": "application/json",
@@ -55,8 +53,6 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
             if (response.ok) {
                 const data = await response.json();
-                // Handle successful response (e.g., update state, show a message)
-                console.log("Friend request rejected:", data);
             } else {
                 const error = await response.json();
                 alert(`Error: ${error.message}`);
@@ -101,14 +97,10 @@ function PersonInfo({ person, isFriendRequest, onClick, isHeader }) {
 
     return (
         <div className="contact" onClick={() => onClick(currentUser)}>
-            <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
-                alt={`${currentUser.email} profile`}
-                className="profile-photo"
-            />
+            <img src={currentUser.imagePath || defaultUserIcon} className="profile-photo" />
             <div className="contact-info">
-                <span className="contact-name">{currentUser.firstName || ""}</span>
-                <span className="contact-name">{currentUser.secondName || ""}</span>
+                <span className="contact-name">{currentUser.firstName || ""} </span>
+                <span className="contact-name">{currentUser.lastName || ""}</span>
                 <br></br>
                 {!isHeader ? (
                     <span className="last-message">{currentUser.lastMessage || ""}</span>

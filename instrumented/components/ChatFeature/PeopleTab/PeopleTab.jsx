@@ -2,7 +2,7 @@ import "./PeopleTab.css";
 
 import React, { useEffect, useState, useContext } from "react";
 import { lightTheme, darkTheme } from "../../themes.js";
-import { Container, Button, LabelField, InputField } from "../../styled-components.js";
+import { Container, Button, LabelField, InputField, Body } from "../../styled-components.js";
 import PersonInfo from "../PersonInfo/PersonInfo.jsx";
 import { ThemeContext } from "../../../ThemeContext.js";
 
@@ -41,7 +41,7 @@ function PeopleTab({ onUserChange }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/user/friends", {
+            const response = await fetch("http://localhost:3002/friends", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -70,7 +70,7 @@ function PeopleTab({ onUserChange }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/user/friends/requests", {
+            const response = await fetch("http://localhost:3002/friends/requests", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -96,7 +96,7 @@ function PeopleTab({ onUserChange }) {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("http://localhost:3002/user/friends/request", {
+            const response = await fetch("http://localhost:3002/friends/request", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -138,7 +138,7 @@ function PeopleTab({ onUserChange }) {
                 </Button>
             </div>
 
-            <div className="contact-list">
+            <div>
                 {filteredFriends.map((f) => (
                     <PersonInfo key={f.email} person={f} onClick={() => onUserChange(f)}></PersonInfo>
                 ))}
