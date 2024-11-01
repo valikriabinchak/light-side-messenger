@@ -18,7 +18,7 @@ function App() {
     return (
         <Body className="app-container" theme={theme == "darkTheme" ? darkTheme : lightTheme}>
             <Routes>
-                <Route path="/" element={<AuthComponent isRegistration={false} />} />
+                <Route path="/" element={<AuthComponent />} />
                 <Route path="/messenger" element={<MessengerContainerComponent />} />
                 <Route path="/profile" element={<ProfileComponent />} />
                 <Route path="/resetting-password" element={<ResetPasswordComponent isEmailPage={false} />} />

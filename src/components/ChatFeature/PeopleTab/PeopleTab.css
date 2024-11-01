@@ -44,7 +44,7 @@ body {
 
 .header input {
     padding-left: 36px;
-    width: calc(100% - 36px - 32px - 36px);
+    width: calc(100% - 56px);
 }
 
 .contact-list {
@@ -53,4 +53,33 @@ body {
 
 #add-friend-btn {
     min-width: 0px;
+}
+
+@media (max-width: 768px) {
+    .chat-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header input {
+        padding-left: 36px;
+        width: calc(100% - 60px);
+    }
+
+    .sidebar {
+        width: 90%;
+    }
+
+    .profile-photo {
+        margin-left: 0;
+    }
+
+    .people-tab {
+        display: block;
+    }
+
+    #add-friend-btn {
+        width: 40px;
+    }
 }

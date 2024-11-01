@@ -107,3 +107,68 @@
 input {
     margin: 5px 0px;
 }
+
+.dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%; /* Full width for mobile */
+        margin: 0; /* Remove margin */
+        height: 100vh; /* Ensure it fills the viewport */
+        overflow-y: auto; /* Enable scrolling on mobile */
+    }
+
+    .photo,
+    .main-data,
+    .action-btns {
+        width: 85%;
+    }
+
+    .photo img {
+        width: 100%;
+        height: auto;
+    }
+
+    .main-data {
+        max-width: none;
+    }
+
+    .ages-theme-content {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: left;
+    }
+
+    .ages-theme-content .age-field {
+        width: 60%;
+    }
+
+    .action-btns {
+        justify-content: center;
+        margin-top: auto; /* Push buttons to the bottom on mobile */
+    }
+
+    .action-btns button {
+        min-width: 0px;
+        width: 85px;
+    }
+
+    .photo button {
+        min-width: 0px;
+        width: 100%;
+        margin: 0;
+    }
+}

@@ -1,37 +1,68 @@
-const HtmlWebpackPlugin = require( "html-webpack-plugin" );
-const path = require( "path" );
+const path = require( 'path' );
+const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
+// const webpack = require( 'webpack' );
 
-const config = {
+module.exports = {
     entry: path.resolve( __dirname, '../src/index.js' ),
-    mode: "development",
     output: {
-        path: path.resolve( __dirname, '../dist' ),
-        filename: 'index.js',
+        filename: 'bundle.js',
+        path: path.resolve( __dirname, './../dist' ),
+        publicPath: '/',
     },
-    plugins: [ new HtmlWebpackPlugin( {
-        template: path.resolve( __dirname, '../templates/index.html' ), // Absolute path
-        filename: 'index.html',
-        title: 'My App',
-    } ) ],
+    mode: 'development',
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ]
+                test: /\.js?|.jsx?$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [ '@babel/preset-env', '@babel/preset-react' ],
+                        },
+                    },
+                ],
             },
             {
-                test: /\.(js|jsx)$/,
-                use: [ {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [ '@babel/preset-env', ]
-                    }
-                } ], // Webpack process loaders from the end to the start
-            } ]
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ],
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/[name][ext]',
+                },
+            }
+        ],
     },
     resolve: {
-        extensions: [ '.js', '.jsx' ], // Allow importing without specifying extensions
+        extensions: [ '.js', '.jsx' ],
+    },
+    plugins: [
+        new HtmlWebpackPlugin( {
+            template: path.resolve( __dirname, '../templates/index.html' ),
+        } ),
+        // new HtmlWebpackPlugin( {
+        //     template: './public/index.html',
+        // } ),
+        // new webpack.EnvironmentPlugin( {
+        //     NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
+        //     MAIN_API: "MNAPI",
+        // } ),
+        // new webpack.ProvidePlugin( {
+        //     process: 'process/browser',
+        // } ),
+    ],
+    resolve: {
+        extensions: [ '.js', '.jsx' ],
+        alias: {
+            '@app': path.resolve( __dirname, '../src/' ),
+            '@components': path.resolve( __dirname, '../src/components/' ),
+        },
+    },
+    devServer: {
+        historyApiFallback: true,
     },
 };
-
-module.exports = config;
